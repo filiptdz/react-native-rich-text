@@ -86,40 +86,31 @@ ToolbarButton.defaultProps = {
 export default class Toolbar extends React.Component {
   static BOLD = ({ callback }) => (
     <ToolbarButton callback={callback} format="bold">
-      <Image style={styles.image} source={require('../assets/toolbarAssets/bold.png')} />
+      <Image style={styles.image} source={require('./assets/bold.png')} />
     </ToolbarButton>
   );
 
   static ITALIC = ({ callback }) => (
     <ToolbarButton callback={callback} format="italic">
-      <Image style={styles.image} source={require('../assets/toolbarAssets/italic.png')} />
+      <Image style={styles.image} source={require('./assets/italic.png')} />
     </ToolbarButton>
   );
 
   static H1 = ({ callback }) => (
     <ToolbarButton callback={callback} format="h1">
-      <Image
-        style={[styles.image, { width: 20 }]}
-        source={require('../assets/toolbarAssets/header.png')}
-      />
+      <Image style={[styles.image, { width: 20 }]} source={require('./assets/header.png')} />
     </ToolbarButton>
   );
 
   static UL = ({ callback }) => (
     <ToolbarButton callback={callback} format="ul">
-      <Image
-        style={[styles.image, { width: 18 }]}
-        source={require('../assets/toolbarAssets/list-bullet.png')}
-      />
+      <Image style={[styles.image, { width: 18 }]} source={require('./assets/list-bullet.png')} />
     </ToolbarButton>
   );
 
   static OL = ({ callback }) => (
     <ToolbarButton callback={callback} format="ol">
-      <Image
-        style={[styles.image, { width: 18 }]}
-        source={require('../assets/toolbarAssets/list-ordered.png')}
-      />
+      <Image style={[styles.image, { width: 18 }]} source={require('./assets/list-ordered.png')} />
     </ToolbarButton>
   );
 
@@ -127,7 +118,7 @@ export default class Toolbar extends React.Component {
     <ToolbarButton callback={callback} format="code-block">
       <Image
         style={[styles.image, { height: 15, width: 18 }]}
-        source={require('../assets/toolbarAssets/code.png')}
+        source={require('./assets/code.png')}
       />
     </ToolbarButton>
   );
@@ -145,10 +136,7 @@ export default class Toolbar extends React.Component {
             }
           }}
         >
-          <Image
-            style={[styles.image, { width: 18 }]}
-            source={require('../assets/toolbarAssets/image.png')}
-          />
+          <Image style={[styles.image, { width: 18 }]} source={require('./assets/image.png')} />
         </TouchableOpacity>
       )}
     </RichTextContext.Consumer>
