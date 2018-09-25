@@ -50,8 +50,9 @@ Component that encapsules the editor
 
 #### Props
 
-| Name | Type | Default | Description |
-| value | string | '' | Content for the editor. Should be in Quill format. |
+| Name  | Type   | Default | Description                                        |
+| ----- | ------ | ------- | -------------------------------------------------- |
+| value | string | ''      | Content for the editor. Should be in Quill format. |
 
 ### RichText.Toolbar
 
@@ -63,9 +64,10 @@ Buttons for the toolbar. Some common usages are available: `BOLD, ITALIC, H1, UL
 
 #### Props
 
-| Name | Type | Default | Description |
+| Name     | Type     | Default   | Description                                                                                                                                                                      |
+| -------- | -------- | --------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | callback | function | undefined | Function to be executed when the button is pressed. If the editor should be reloaded when the callback is executed, it should return an object on the format of { reload: true } |
-| format | string | undefined | Format the text should take on after the button is pressed. Only available on `CUSTOM` buttons |
+| format   | string   | undefined | Format the text should take on after the button is pressed. Only available on `CUSTOM` buttons                                                                                   |
 
 ### RichText.Editor
 
@@ -73,5 +75,6 @@ View where the text is edited. Actually is a WebView with a Quill editor.
 
 #### Props
 
-| Name | Type | Default | Description |
+| Name         | Type     | Default  | Description                                                                                                                    |
+| ------------ | -------- | -------- | ------------------------------------------------------------------------------------------------------------------------------ |
 | onChangeText | Function | () => {} | Function called when the user edits the content, with a single parameter being the content of the editor, in the Quill format. |
