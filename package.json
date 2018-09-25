@@ -1,0 +1,38 @@
+{
+  "name": "react-native-rich-text",
+  "version": "1.0.0",
+  "description": "Rich text editor for React Native projects",
+  "main": "index.js",
+  "keywords": [
+    "react-native",
+    "react-native-component",
+    "mobile",
+    "ios",
+    "android",
+    "text",
+    "rich-text",
+    "editor",
+    "writing"
+  ],
+  "author": {
+    "name": "Filipe Degrazia",
+    "email": "me@filipedegrazia.com"
+  },
+  "homepage": "https://github.com/filiptdz/react-native-rich-text",
+  "bugs": {
+    "url": "https://github.com/filiptdz/react-native-rich-text/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/filiptdz/react-native-rich-text.git"
+  },
+  "license": "MIT",
+  "peerDependencies": {
+    "react": "~16.3.0",
+    "react-native": "^0.57.0",
+    "expo": "^27.0.0"
+  },
+  "dependencies": {
+    "prop-types": "^15.6.0"
+  }
+}

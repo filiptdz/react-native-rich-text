@@ -1,0 +1,14 @@
+.app-body {
+  margin: 0px;
+}
+
+.floating-toolbar {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background-color: white;
+}
+
+#editor {
+  border: hidden !important;
+}
