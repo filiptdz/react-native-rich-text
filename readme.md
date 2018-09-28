@@ -2,6 +2,8 @@
 
 Rich text editor for React Native projects. Based on [Quill.js](https://quilljs.com/)
 
+**Not yet suggested for use in production apps. If you would like to help, try your hand at some of the issues with the label `Release Roadmap`**
+
 ## Instalation
 
 ```js
