@@ -1,14 +1,12 @@
 import React from 'react';
-import {
-  View, TouchableOpacity, StyleSheet, Platform, Image,
-} from 'react-native';
+import { View, TouchableOpacity, StyleSheet, Platform, Image } from 'react-native';
 import PropTypes from 'prop-types';
 import { ImagePicker, Permissions } from 'expo';
 
 import { EditorWebView } from './Editor';
 import { RichTextContext } from './RichText';
 
-const getImageAsync = async (callback) => {
+const getImageAsync = async callback => {
   const statusRoll = await Permissions.askAsync(Permissions.CAMERA_ROLL);
   if (statusRoll.status === 'granted') {
     const image = await ImagePicker.launchImageLibraryAsync({
