@@ -1,6 +1,6 @@
 # react-native-rich-text
 
-Rich text editor for React Native projects
+Rich text editor for React Native projects. Based on [Quill.js](https://quilljs.com/)
 
 ## Instalation
 
@@ -8,6 +8,21 @@ Rich text editor for React Native projects
 npm install --save react-native-rich-text
 // or
 yarn add react-native-rich-text
+```
+
+## Important
+You must make sure the .html files will be bundled with the app. For this, add the following fields to your `app.json`:
+```json
+{
+  "expo": {
+    "assetBundlePatterns": [
+      "node_modules/react-native-rich-text/assets/*"
+    ],
+    "packagerOpts": {
+      "assetExts": ["html"]
+    }
+  }
+}
 ```
 
 ## Usage
