@@ -81,15 +81,17 @@ Buttons for the toolbar. Some common usages are available: `BOLD, ITALIC, H1, UL
 
 | Name     | Type     | Default   | Description                                                                                                                                                                      |
 | -------- | -------- | --------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| callback | function | undefined | Function to be executed when the button is pressed. If the editor should be reloaded when the callback is executed, it should return an object on the format of { reload: true } |
-| format   | string   | undefined | Format the text should take on after the button is pressed. Only available on `CUSTOM` buttons                                                                                   |
+| callback | function | `undefined` | Function to be executed when the button is pressed. If the editor should be reloaded when the callback is executed, it should return an object on the format of { reload: true } |
+| format   | string   | `undefined` | Format the text should take on after the button is pressed. Only available on `CUSTOM` buttons                                                                                   |
+| style | object | `{ width: '100%', padding: 10, flexDirection: 'row', backgroundColor: 'white', ...Platform.select({ ios: { shadowColor: 'rgba(0,0,0,0.5)', shadowOffset: { width: 0, height: 1 }, shadowRadius: 2, shadowOpacity: 1 }, android: { elevation: 6, }})}` | Style to use for the `View` containing the toolbar buttons |
 
 ### RichText.Editor
 
-View where the text is edited. Actually is a WebView with a Quill editor.
+View where the text is edited. Actually is a `WebView` with a Quill editor.
 
 #### Props
 
 | Name         | Type     | Default  | Description                                                                                                                    |
 | ------------ | -------- | -------- | ------------------------------------------------------------------------------------------------------------------------------ |
 | onChangeText | Function | () => {} | Function called when the user edits the content, with a single parameter being the content of the editor, in the Quill format. |
+| style | object | `{ zIndex: -1 }` | Style to use for the `View` containing the `WebView` |

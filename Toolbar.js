@@ -1,12 +1,14 @@
 import React from 'react';
-import { View, TouchableOpacity, StyleSheet, Platform, Image } from 'react-native';
+import {
+  View, TouchableOpacity, StyleSheet, Platform, Image,
+} from 'react-native';
 import PropTypes from 'prop-types';
 import { ImagePicker, Permissions } from 'expo';
 
 import { EditorWebView } from './Editor';
 import { RichTextContext } from './RichText';
 
-const getImageAsync = async callback => {
+const getImageAsync = async (callback) => {
   const statusRoll = await Permissions.askAsync(Permissions.CAMERA_ROLL);
   if (statusRoll.status === 'granted') {
     const image = await ImagePicker.launchImageLibraryAsync({
@@ -21,27 +23,6 @@ const getImageAsync = async callback => {
 };
 
 const styles = StyleSheet.create({
-  background: {
-    width: '100%',
-    padding: 10,
-    flexDirection: 'row',
-    backgroundColor: 'white',
-    zIndex: 1,
-    ...Platform.select({
-      ios: {
-        shadowColor: 'rgba(0,0,0,0.5)',
-        shadowOffset: {
-          width: 0,
-          height: 1,
-        },
-        shadowRadius: 2,
-        shadowOpacity: 1,
-      },
-      android: {
-        elevation: 6,
-      },
-    }),
-  },
   image: {
     marginHorizontal: 5,
     height: 15,
@@ -59,8 +40,8 @@ const ToolbarButton = ({ callback, children, format }) => (
             setFormat(format);
           }
           if (callback) {
-            const { reload } = callback();
-            if (reload) {
+            const response = callback();
+            if (response && response.reload) {
               EditorWebView.current.reload();
             }
           }
@@ -143,11 +124,35 @@ export default class Toolbar extends React.Component {
   static Custom = props => <ToolbarButton {...props} />;
 
   render() {
-    const { children } = this.props;
-    return <View style={styles.background}>{children}</View>;
+    const { children, style } = this.props;
+    return <View style={style}>{children}</View>;
   }
 }
 
 Toolbar.propTypes = {
+  style: PropTypes.object,
   children: PropTypes.oneOfType([PropTypes.array, PropTypes.object]).isRequired,
+};
+
+Toolbar.defaultProps = {
+  style: {
+    width: '100%',
+    padding: 10,
+    flexDirection: 'row',
+    backgroundColor: 'white',
+    ...Platform.select({
+      ios: {
+        shadowColor: 'rgba(0,0,0,0.5)',
+        shadowOffset: {
+          width: 0,
+          height: 1,
+        },
+        shadowRadius: 2,
+        shadowOpacity: 1,
+      },
+      android: {
+        elevation: 6,
+      },
+    }),
+  },
 };
