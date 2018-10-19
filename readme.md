@@ -77,7 +77,7 @@ Common format for a Toolbar. It isn't necessary, and the buttons can be used ins
 
 ### RichText.Toolbar.\*
 
-Buttons for the toolbar. Some common usages are available: `BOLD, ITALIC, H1, UL, OL, CODE and IMAGE`. For other uses, `CUSTOM` can be used if there is a need to refresh the editor, or to change the text format in the editor. To see the available formats, check the [Quill documentation](https://quilljs.com/docs/api/).
+Buttons for the toolbar. Some common usages are available: `BOLD, ITALIC, H1, UL, OL, CODE and IMAGE`. For other uses, `Custom` can be used if there is a need to refresh the editor, or to change the text format in the editor. To see the available formats, check the [Quill documentation](https://quilljs.com/docs/api/).
 
 #### Props
 
