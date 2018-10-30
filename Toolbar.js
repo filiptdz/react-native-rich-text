@@ -63,63 +63,102 @@ ToolbarButton.defaultProps = {
 };
 
 export default class Toolbar extends React.Component {
-  static BOLD = ({ callback }) => (
-    <ToolbarButton callback={callback} format="bold">
-      <Image style={styles.image} source={require('./assets/bold.png')} />
-    </ToolbarButton>
-  );
+  static BOLD = ({ callback, source }) => {
+    const { imageStyles } = this.props;
+    return (
+      <ToolbarButton callback={callback} format="bold">
+        <Image
+          style={imageStyles || styles.image}
+          source={source || require('./assets/bold.png')}
+        />
+      </ToolbarButton>
+    );
+  };
 
-  static ITALIC = ({ callback }) => (
-    <ToolbarButton callback={callback} format="italic">
-      <Image style={styles.image} source={require('./assets/italic.png')} />
-    </ToolbarButton>
-  );
+  static ITALIC = ({ callback, source }) => {
+    const { imageStyles } = this.props;
+    return (
+      <ToolbarButton callback={callback} format="italic">
+        <Image
+          style={imageStyles || styles.image}
+          source={source || require('./assets/italic.png')}
+        />
+      </ToolbarButton>
+    );
+  };
 
-  static H1 = ({ callback }) => (
-    <ToolbarButton callback={callback} format="h1">
-      <Image style={[styles.image, { width: 20 }]} source={require('./assets/header.png')} />
-    </ToolbarButton>
-  );
+  static H1 = ({ callback, source }) => {
+    const { imageStyles } = this.props;
+    return (
+      <ToolbarButton callback={callback} format="h1">
+        <Image
+          style={imageStyles || styles.image}
+          source={source || require('./assets/header.png')}
+        />
+      </ToolbarButton>
+    );
+  };
 
-  static UL = ({ callback }) => (
-    <ToolbarButton callback={callback} format="ul">
-      <Image style={[styles.image, { width: 18 }]} source={require('./assets/list-bullet.png')} />
-    </ToolbarButton>
-  );
+  static UL = ({ callback, source }) => {
+    const { imageStyles } = this.props;
+    return (
+      <ToolbarButton callback={callback} format="ul">
+        <Image
+          style={imageStyles || styles.image}
+          source={source || require('./assets/list-bullet.png')}
+        />
+      </ToolbarButton>
+    );
+  };
 
-  static OL = ({ callback }) => (
-    <ToolbarButton callback={callback} format="ol">
-      <Image style={[styles.image, { width: 18 }]} source={require('./assets/list-ordered.png')} />
-    </ToolbarButton>
-  );
+  static OL = ({ callback, source }) => {
+    const { imageStyles } = this.props;
+    return (
+      <ToolbarButton callback={callback} format="ol">
+        <Image
+          style={imageStyles || styles.image}
+          source={source || require('./assets/list-ordered.png')}
+        />
+      </ToolbarButton>
+    );
+  };
 
-  static CODE = ({ callback }) => (
-    <ToolbarButton callback={callback} format="code-block">
-      <Image
-        style={[styles.image, { height: 15, width: 18 }]}
-        source={require('./assets/code.png')}
-      />
-    </ToolbarButton>
-  );
+  static CODE = ({ callback, source }) => {
+    const { imageStyles } = this.props;
+    return (
+      <ToolbarButton callback={callback} format="code-block">
+        <Image
+          style={imageStyles || [styles.image, { height: 15, width: 18 }]}
+          source={source || require('./assets/code.png')}
+        />
+      </ToolbarButton>
+    );
+  };
 
-  static IMAGE = ({ callback }) => (
-    <RichTextContext.Consumer>
-      {({ setFormat }) => (
-        <TouchableOpacity
-          onPress={() => {
-            if (setFormat) {
-              getImageAsync(base64 => setFormat('image', 'data:image/jpeg;base64, ' + base64));
-            }
-            if (callback) {
-              callback();
-            }
-          }}
-        >
-          <Image style={[styles.image, { width: 18 }]} source={require('./assets/image.png')} />
-        </TouchableOpacity>
-      )}
-    </RichTextContext.Consumer>
-  );
+  static IMAGE = ({ callback, source }) => {
+    const { imageStyles } = this.props;
+    return (
+      <RichTextContext.Consumer>
+        {({ setFormat }) => (
+          <TouchableOpacity
+            onPress={() => {
+              if (setFormat) {
+                getImageAsync(base64 => setFormat('image', 'data:image/jpeg;base64, ' + base64));
+              }
+              if (callback) {
+                callback();
+              }
+            }}
+          >
+            <Image
+              style={imageStyles || [styles.image, { width: 18 }]}
+              source={source || require('./assets/image.png')}
+            />
+          </TouchableOpacity>
+        )}
+      </RichTextContext.Consumer>
+    );
+  };
 
   static Custom = props => <ToolbarButton {...props} />;
 
@@ -132,6 +171,10 @@ export default class Toolbar extends React.Component {
 Toolbar.propTypes = {
   style: PropTypes.object,
   children: PropTypes.oneOfType([PropTypes.array, PropTypes.object]).isRequired,
+  imageStyles: PropTypes.object,
+};
+Toolbar.defaultProps = {
+  imageStyles: undefined,
 };
 
 Toolbar.defaultProps = {

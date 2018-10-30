@@ -11,13 +11,13 @@ yarn add react-native-rich-text
 ```
 
 ## Important
+
 You must make sure the .html files will be bundled with the app. For this, add the following fields to your `app.json`:
+
 ```json
 {
   "expo": {
-    "assetBundlePatterns": [
-      "node_modules/react-native-rich-text/assets/*"
-    ],
+    "assetBundlePatterns": ["node_modules/react-native-rich-text/assets/*"],
     "packagerOpts": {
       "assetExts": ["html"]
     }
@@ -73,17 +73,24 @@ Component that encapsules the editor
 
 Common format for a Toolbar. It isn't necessary, and the buttons can be used inside any other component.
 
+#### Props
+
+| Name        | Type   | Default                                                                                                                                                                                                                                               | Description                                                |
+| ----------- | ------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------- |
+| style       | object | `{ width: '100%', padding: 10, flexDirection: 'row', backgroundColor: 'white', ...Platform.select({ ios: { shadowColor: 'rgba(0,0,0,0.5)', shadowOffset: { width: 0, height: 1 }, shadowRadius: 2, shadowOpacity: 1 }, android: { elevation: 6, }})}` | Style to use for the `View` containing the toolbar buttons |
+| imageStyles | object |                                                                                                                                                                                                                                                       | Style to use for the `Image` of the toolbar buttons        |
+
 ### RichText.Toolbar.\*
 
 Buttons for the toolbar. Some common usages are available: `BOLD, ITALIC, H1, UL, OL, CODE and IMAGE`. For other uses, `CUSTOM` can be used if there is a need to refresh the editor, or to change the text format in the editor. To see the available formats, check the [Quill documentation](https://quilljs.com/docs/api/).
 
 #### Props
 
-| Name     | Type     | Default   | Description                                                                                                                                                                      |
-| -------- | -------- | --------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| callback | function | `undefined` | Function to be executed when the button is pressed. If the editor should be reloaded when the callback is executed, it should return an object on the format of { reload: true } |
-| format   | string   | `undefined` | Format the text should take on after the button is pressed. Only available on `CUSTOM` buttons                                                                                   |
-| style | object | `{ width: '100%', padding: 10, flexDirection: 'row', backgroundColor: 'white', ...Platform.select({ ios: { shadowColor: 'rgba(0,0,0,0.5)', shadowOffset: { width: 0, height: 1 }, shadowRadius: 2, shadowOpacity: 1 }, android: { elevation: 6, }})}` | Style to use for the `View` containing the toolbar buttons |
+| Name     | Type                  | Default                                                                   | Description                                                                                                                                                                      |
+| -------- | --------------------- | ------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| callback | function              | `undefined`                                                               | Function to be executed when the button is pressed. If the editor should be reloaded when the callback is executed, it should return an object on the format of { reload: true } |
+| format   | string                | `undefined`                                                               | Format the text should take on after the button is pressed. Only available on `CUSTOM` buttons                                                                                   |
+| source   | `ImageSourcePropType` | Depends on the type. Every kind has a default button, except for `CUSTOM` | Source of the image to use as source for the toolbar button                                                                                                                      |
 
 ### RichText.Editor
 
@@ -91,7 +98,7 @@ View where the text is edited. Actually is a `WebView` with a Quill editor.
 
 #### Props
 
-| Name         | Type     | Default  | Description                                                                                                                    |
-| ------------ | -------- | -------- | ------------------------------------------------------------------------------------------------------------------------------ |
-| onChangeText | Function | () => {} | Function called when the user edits the content, with a single parameter being the content of the editor, in the Quill format. |
-| style | object | `{ zIndex: -1 }` | Style to use for the `View` containing the `WebView` |
+| Name         | Type     | Default          | Description                                                                                                                    |
+| ------------ | -------- | ---------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| onChangeText | Function | () => {}         | Function called when the user edits the content, with a single parameter being the content of the editor, in the Quill format. |
+| style        | object   | `{ zIndex: -1 }` | Style to use for the `View` containing the `WebView`                                                                           |
