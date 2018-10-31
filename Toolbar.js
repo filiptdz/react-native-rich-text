@@ -65,8 +65,7 @@ ToolbarButton.defaultProps = {
 };
 
 export default class Toolbar extends React.Component {
-  static BOLD = ({ callback, source }) => {
-    const { imageStyles } = this.props;
+  static BOLD = ({ callback, source, imageStyles }) => {
     return (
       <ToolbarButton callback={callback} format="bold">
         <Image
@@ -77,8 +76,7 @@ export default class Toolbar extends React.Component {
     );
   };
 
-  static ITALIC = ({ callback, source }) => {
-    const { imageStyles } = this.props;
+  static ITALIC = ({ callback, source, imageStyles }) => {
     return (
       <ToolbarButton callback={callback} format="italic">
         <Image
@@ -89,8 +87,7 @@ export default class Toolbar extends React.Component {
     );
   };
 
-  static H1 = ({ callback, source }) => {
-    const { imageStyles } = this.props;
+  static H1 = ({ callback, source, imageStyles }) => {
     return (
       <ToolbarButton callback={callback} format="h1">
         <Image
@@ -101,8 +98,7 @@ export default class Toolbar extends React.Component {
     );
   };
 
-  static UL = ({ callback, source }) => {
-    const { imageStyles } = this.props;
+  static UL = ({ callback, source, imageStyles }) => {
     return (
       <ToolbarButton callback={callback} format="ul">
         <Image
@@ -113,8 +109,7 @@ export default class Toolbar extends React.Component {
     );
   };
 
-  static OL = ({ callback, source }) => {
-    const { imageStyles } = this.props;
+  static OL = ({ callback, source, imageStyles }) => {
     return (
       <ToolbarButton callback={callback} format="ol">
         <Image
@@ -125,8 +120,7 @@ export default class Toolbar extends React.Component {
     );
   };
 
-  static CODE = ({ callback, source }) => {
-    const { imageStyles } = this.props;
+  static CODE = ({ callback, source, imageStyles }) => {
     return (
       <ToolbarButton callback={callback} format="code-block">
         <Image
@@ -137,8 +131,7 @@ export default class Toolbar extends React.Component {
     );
   };
 
-  static IMAGE = ({ callback, source }) => {
-    const { imageStyles } = this.props;
+  static IMAGE = ({ callback, source, imageStyles}) => {
     return (
       <RichTextContext.Consumer>
         {({ setFormat }) => (
@@ -162,17 +155,23 @@ export default class Toolbar extends React.Component {
     );
   };
 
-  static UNDERLINE = ({ callback }) => (
-    <ToolbarButton callback={callback} format="underline">
-      <Image style={styles.image} source={require('./assets/underline.png')} />
-    </ToolbarButton>
-  );
+  static UNDERLINE = ({ callback, source, imageStyles }) => {
+    return (
+      <ToolbarButton callback={callback} format="underline">
+        <Image style={imageStyles || styles.image}
+               source={source || require('./assets/underline.png')} />
+      </ToolbarButton>
+    )
+  };
 
-  static SIZE = ({ callback }) => (
-    <ToolbarButton callback={callback} format="size">
-      <Image style={styles.image} source={require('./assets/increase.png')} />
-    </ToolbarButton>
-  );
+  static SIZE = ({ callback, source, imageStyles }) => {
+    return (
+      <ToolbarButton callback={callback} format="size">
+        <Image style={imageStyles || styles.image}
+               source={source || require('./assets/increase.png')} />
+      </ToolbarButton>
+    );
+  }
 
   static Custom = props => <ToolbarButton {...props} />;
 
@@ -185,7 +184,7 @@ export default class Toolbar extends React.Component {
 Toolbar.propTypes = {
   style: PropTypes.object,
   children: PropTypes.oneOfType([PropTypes.array, PropTypes.object]).isRequired,
-  imageStyles: PropTypes.object,
+  imageStyles: PropTypes.style,
 };
 Toolbar.defaultProps = {
   imageStyles: undefined,
