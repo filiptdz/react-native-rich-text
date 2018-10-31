@@ -883,7 +883,7 @@ const editor = new Quill('#editor', {
   modules: {
     toolbar: null,
   },
-  placeholder: 'Text',
+  placeholder: 'Comparte un texto o una foto',
   theme: 'snow',
 });
 
@@ -904,6 +904,15 @@ document.addEventListener('message', (data) => {
       }
       case 'italic': {
         editor.format(updatedSelector, !currentFormat.italic, 'user');
+        break;
+      }
+      case 'underline': {
+        editor.format(updatedSelector, !currentFormat.underline, 'user');
+        break;
+      }
+      case 'size': {
+        const updatedFormat = currentFormat.size === 'large' ? null : 'large';
+        editor.format('size', updatedFormat, 'user');
         break;
       }
       case 'h1': {
@@ -931,6 +940,8 @@ document.addEventListener('message', (data) => {
   } else if (data.data[0] === '{') {
     const content = JSON.parse(data.data);
     editor.setContents(content);
+  } else if (data.data[0] === '<') {
+    editor.setContents(editor.clipboard.convert(data.data, 'silent'))
   }
 });
 
@@ -1121,7 +1132,7 @@ function create(input, value) {
         throw new ParchmentError("Unable to create " + input + " blot");
     }
     var BlotClass = match;
-    var node = 
+    var node =
     // @ts-ignore
     input instanceof Node || input['nodeType'] === Node.TEXT_NODE ? input : BlotClass.create(value);
     return new BlotClass(node, value);

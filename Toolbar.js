@@ -27,14 +27,14 @@ const styles = StyleSheet.create({
     marginHorizontal: 5,
     height: 15,
     width: 15,
-    resizeMode: 'contain',
+    resizeMode: 'cover',
   },
 });
 
-const ToolbarButton = ({ callback, children, format }) => (
+const ToolbarButton = ({ callback, children, format, style }) => (
   <RichTextContext.Consumer>
     {({ setFormat }) => (
-      <TouchableOpacity
+      <TouchableOpacity style={style}
         onPress={() => {
           if (setFormat && format) {
             setFormat(format);
@@ -56,10 +56,12 @@ ToolbarButton.propTypes = {
   children: PropTypes.oneOfType([PropTypes.array, PropTypes.object]).isRequired,
   callback: PropTypes.func,
   format: PropTypes.string,
+  style: PropTypes.style
 };
 ToolbarButton.defaultProps = {
   callback: undefined,
   format: undefined,
+  style: undefined
 };
 
 export default class Toolbar extends React.Component {
@@ -159,6 +161,18 @@ export default class Toolbar extends React.Component {
       </RichTextContext.Consumer>
     );
   };
+
+  static UNDERLINE = ({ callback }) => (
+    <ToolbarButton callback={callback} format="underline">
+      <Image style={styles.image} source={require('./assets/underline.png')} />
+    </ToolbarButton>
+  );
+
+  static SIZE = ({ callback }) => (
+    <ToolbarButton callback={callback} format="size">
+      <Image style={styles.image} source={require('./assets/increase.png')} />
+    </ToolbarButton>
+  );
 
   static Custom = props => <ToolbarButton {...props} />;
 
