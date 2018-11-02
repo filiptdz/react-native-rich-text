@@ -64,15 +64,7 @@ export default class Editor extends React.Component {
                 domStorageEnabled
                 bounces={false}
                 scalesPageToFit={false}
-                source={
-                  Platform.OS === 'android'
-                    ? {
-                      uri: localUri.includes('ExponentAsset')
-                        ? localUri
-                        : 'file:///android_asset/' + localUri.substr(9),
-                    }
-                    : require('./assets/texteditor.html')
-                }
+                source={require('./assets/texteditor.html')}
                 style={{ backgroundColor: 'white', flex: 1 }}
                 onMessage={(evt) => {
                   if (evt.nativeEvent.data !== '') {
@@ -82,7 +74,7 @@ export default class Editor extends React.Component {
               />
               <View
                 style={{
-                  height: Platform.OS === 'android' ? keyboardHeight : 0,
+                  height: 0,
                 }}
               />
             </View>
