@@ -77,10 +77,9 @@ Common format for a Toolbar. It isn't necessary, and the buttons can be used ins
 
 #### Props
 
-| Name        | Type   | Default                                                                                                                                                                                                                                               | Description                                                |
-| ----------- | ------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------- |
-| style       | object | `{ width: '100%', padding: 10, flexDirection: 'row', backgroundColor: 'white', ...Platform.select({ ios: { shadowColor: 'rgba(0,0,0,0.5)', shadowOffset: { width: 0, height: 1 }, shadowRadius: 2, shadowOpacity: 1 }, android: { elevation: 6, }})}` | Style to use for the `View` containing the toolbar buttons |
-| imageStyles | object |                                                                                                                                                                                                                                                       | Style to use for the `Image` of the toolbar buttons        |
+| Name  | Type   | Default                                                                                                                                                                                                                                               | Description                                                |
+| ----- | ------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------- |
+| style | object | `{ width: '100%', padding: 10, flexDirection: 'row', backgroundColor: 'white', ...Platform.select({ ios: { shadowColor: 'rgba(0,0,0,0.5)', shadowOffset: { width: 0, height: 1 }, shadowRadius: 2, shadowOpacity: 1 }, android: { elevation: 6, }})}` | Style to use for the `View` containing the toolbar buttons |
 
 ### RichText.Toolbar.\*
 
@@ -88,11 +87,12 @@ Buttons for the toolbar. Some common usages are available: `BOLD, ITALIC, H1, UL
 
 #### Props
 
-| Name     | Type                  | Default                                                                   | Description                                                                                                                                                                      |
-| -------- | --------------------- | ------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| callback | function              | `undefined`                                                               | Function to be executed when the button is pressed. If the editor should be reloaded when the callback is executed, it should return an object on the format of { reload: true } |
-| format   | string                | `undefined`                                                               | Format the text should take on after the button is pressed. Only available on `Custom` buttons                                                                                   |
-| source   | `ImageSourcePropType` | Depends on the type. Every kind has a default button, except for `Custom` | Source of the image to use as source for the toolbar button                                                                                                                      |
+| Name        | Type                  | Default                                                                   | Description                                                                                                                                                                      |
+| ----------- | --------------------- | ------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| callback    | function              | `undefined`                                                               | Function to be executed when the button is pressed. If the editor should be reloaded when the callback is executed, it should return an object on the format of { reload: true } |
+| format      | string                | `undefined`                                                               | Format the text should take on after the button is pressed. Only available on `Custom` buttons                                                                                   |
+| source      | `ImageSourcePropType` | Depends on the type. Every kind has a default button, except for `Custom` | Source of the image to use as source for the toolbar button                                                                                                                      |
+| imageStyles | object                |                                                                           | Style to use for the `Image` of the toolbar buttons                                                                                                                              |
 
 ### RichText.Editor
 
@@ -105,14 +105,13 @@ View where the text is edited. Actually is a `WebView` with a Quill editor.
 | onChangeText | Function | () => {}         | Function called when the user edits the content, with a single parameter being the content of the editor, in the Quill format. |
 | style        | object   | `{ zIndex: -1 }` | Style to use for the `View` containing the `WebView`                                                                           |
 
-
 ### RichText.Viewer
 
 Used to display the text, since it isn't possible with `<Text>`s. Actually a `WebView` with a Quill viewer.
 
 #### Props
 
-| Name         | Type     | Default          | Description                                                                                                                    |
-| ------------ | -------- | ---------------- | ------------------------------------------------------------------------------------------------------------------------------ |
-| scrollEnabled | boolean | true | If the text is bigger than the screen, defines if it should be possible to scroll through it |
-| onClick | Function | | Function to call when the `Viewer` is clicked |
+| Name          | Type     | Default | Description                                                                                  |
+| ------------- | -------- | ------- | -------------------------------------------------------------------------------------------- |
+| scrollEnabled | boolean  | true    | If the text is bigger than the screen, defines if it should be possible to scroll through it |
+| onClick       | Function |         | Function to call when the `Viewer` is clicked                                                |
