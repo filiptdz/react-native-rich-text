@@ -47,7 +47,6 @@ export default class Editor extends React.Component {
   render() {
     const { keyboardHeight } = this.state;
     const { onChangeText, style } = this.props;
-    const { localUri } = Asset.fromModule(require('./assets/texteditor.html'));
     return (
       <RichTextContext.Consumer>
         {({ setFormat, updateFormatFunc, value }) => {
@@ -64,7 +63,7 @@ export default class Editor extends React.Component {
                 domStorageEnabled
                 bounces={false}
                 scalesPageToFit={false}
-                source={require('./assets/texteditor.html')}
+                source={ require('assets/html/texteditor.html') }
                 style={{ backgroundColor: 'white', flex: 1 }}
                 onMessage={(evt) => {
                   if (evt.nativeEvent.data !== '') {
