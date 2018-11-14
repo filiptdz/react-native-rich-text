@@ -63,7 +63,13 @@ export default class Editor extends React.Component {
                 domStorageEnabled
                 bounces={false}
                 scalesPageToFit={false}
-                source={ require('assets/html/texteditor.html') }
+                source={
+                  Platform.OS === 'android'
+                    ? {
+                      uri: 'file:///android_asset/html/texteditor.html',
+                    }
+                    : require('assets/html/texteditor.html')
+                }
                 style={{ backgroundColor: 'white', flex: 1 }}
                 onMessage={(evt) => {
                   if (evt.nativeEvent.data !== '') {
