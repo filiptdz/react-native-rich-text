@@ -68,7 +68,7 @@ export default class Editor extends React.Component {
                     ? {
                       uri: 'file:///android_asset/html/texteditor.html',
                     }
-                    : require('assets/html/texteditor.html')
+                    : require('./assets/texteditor.html')
                 }
                 style={{ backgroundColor: 'white', flex: 1 }}
                 onMessage={(evt) => {

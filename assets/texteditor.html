@@ -942,6 +942,8 @@ document.addEventListener('message', (data) => {
     editor.setContents(content);
   } else if (data.data[0] === '<') {
     editor.setContents(editor.clipboard.convert(data.data, 'silent'))
+  } else {
+    editor.focus()
   }
 });
 
