@@ -1,9 +1,9 @@
 import React from 'react';
 import {
-  View, WebView, Keyboard, LayoutAnimation, UIManager, Platform,
+  View, Keyboard, LayoutAnimation, UIManager, Platform,
 } from 'react-native';
-import { Asset } from 'expo';
 import PropTypes from 'prop-types';
+import { WebView } from 'react-native-webview';
 
 import { RichTextContext } from './RichText';
 
