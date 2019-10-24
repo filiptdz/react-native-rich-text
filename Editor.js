@@ -63,6 +63,7 @@ export default class Editor extends React.Component {
                 domStorageEnabled
                 bounces={false}
                 scalesPageToFit={false}
+                originWhitelist={['*']}
                 source={
                   Platform.OS === 'android'
                     ? {
