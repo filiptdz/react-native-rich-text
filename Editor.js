@@ -1,9 +1,9 @@
 import React from 'react';
 import {
-  View, WebView, Keyboard, LayoutAnimation, UIManager, Platform,
+  View, Keyboard, LayoutAnimation, UIManager, Platform,
 } from 'react-native';
-import { Asset } from 'expo';
 import PropTypes from 'prop-types';
+import { WebView } from 'react-native-webview';
 
 import { RichTextContext } from './RichText';
 
@@ -63,12 +63,16 @@ export default class Editor extends React.Component {
                 domStorageEnabled
                 bounces={false}
                 scalesPageToFit={false}
+                originWhitelist={['*']}
                 source={
                   Platform.OS === 'android'
                     ? {
                       uri: 'file:///android_asset/html/texteditor.html',
                     }
-                    : require('./assets/texteditor.html')
+                    : (__DEV__) ?
+                      require('./assets/texteditor.html')
+                      :
+                      { uri:'./html/texteditor.html' }
                 }
                 style={{ backgroundColor: 'white', flex: 1 }}
                 onMessage={(evt) => {

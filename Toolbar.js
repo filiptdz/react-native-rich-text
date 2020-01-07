@@ -3,23 +3,22 @@ import {
   View, TouchableOpacity, StyleSheet, Platform, Image,
 } from 'react-native';
 import PropTypes from 'prop-types';
-import { ImagePicker, Permissions } from 'expo';
 
 import { EditorWebView } from './Editor';
 import { RichTextContext } from './RichText';
 
 const getImageAsync = async (callback) => {
-  const statusRoll = await Permissions.askAsync(Permissions.CAMERA_ROLL);
-  if (statusRoll.status === 'granted') {
-    const image = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: 'Images',
-      allowsEditing: true,
-      base64: true,
-    });
-    if (!image.cancelled) {
-      callback(image.base64);
-    }
-  }
+  // const statusRoll = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+  // if (statusRoll.status === 'granted') {
+  //   const image = await ImagePicker.launchImageLibraryAsync({
+  //     mediaTypes: 'Images',
+  //     allowsEditing: true,
+  //     base64: true,
+  //   });
+  //   if (!image.cancelled) {
+  //     callback(image.base64);
+  //   }
+  // }
 };
 
 const styles = StyleSheet.create({

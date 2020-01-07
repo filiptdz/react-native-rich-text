@@ -1,11 +1,11 @@
 import React from 'react';
-import { WebView, Platform } from 'react-native';
-import { Asset } from 'expo';
+import { Platform } from 'react-native';
 import PropTypes from 'prop-types';
+import { WebView } from 'react-native-webview';
 
 import { RichTextContext } from './RichText';
 
-const { localUri } = Asset.fromModule(require('./assets/textviewer.html'));
+const localUri = '';
 
 export const ViewerWebView = React.createRef();
 
