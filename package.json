@@ -1,6 +1,6 @@
 {
   "name": "react-native-rich-text",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Rich text editor for React Native projects",
   "main": "index.js",
   "keywords": [

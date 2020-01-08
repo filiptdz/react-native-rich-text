@@ -45,22 +45,31 @@ export default class Editor extends React.Component {
   updateFormat = (format, extraData = '') => this.post('$' + format + '$' + extraData);
 
   onWebViewMessage = (evt) => {
-    const { onChangeText, onMentionStart } = this.props;
-    const messageString = evt.nativeEvent.data
+    const { onChangeText, onMentionSelected } = this.props;
+    const messageString = evt.nativeEvent.data;
 
     if (messageString === '')
       return false
 
     const message = JSON.parse(messageString)
-    if(message.type === 'mention') {
-      const callback = (mentions = []) => {
-        EditorWebView.current.postMessage(JSON.stringify({ mentions }));
-      }
-      onMentionStart(message.value, callback)
-
-      return false;
+    if(message.type === 'mention-start') {
+      this.handleMentionStart(message.value);
+      return false
+    }
+    if(message.type === 'mention-selected') {
+      onMentionSelected(message.value)
+      return false
     }
     onChangeText(message.value);
+  }
+
+  handleMentionStart(mentions) {
+    const { onMentionStart } = this.props;
+    const callback = (mentions = []) => {
+      // retrive the mentions to the webview
+      EditorWebView.current.postMessage(JSON.stringify({ mentions }));
+    }
+    onMentionStart(mentions, callback)
   }
 
   render() {
@@ -112,10 +121,14 @@ export default class Editor extends React.Component {
 
 Editor.propTypes = {
   onChangeText: PropTypes.func,
-  style: PropTypes.object,
+  onMentionStart: PropTypes.func,
+  onMentionSelected: PropTypes.func,
+  style: PropTypes.shape({})
 };
 Editor.defaultProps = {
   onChangeText: () => {},
+  onMentionStart: () => {},
+  onMentionSelected: () => {},
   style: {
     zIndex: -1,
   },
