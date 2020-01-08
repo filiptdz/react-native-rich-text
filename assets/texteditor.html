@@ -1,77 +1,89 @@
 <html>
   <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"/>
 
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
-    <link href="https://alibrate.github.io/quill-mention/dist/quill.mention.min.css" rel="stylesheet"> <!-- TODO: point to alibrate CDN-->
+    <link href="https://alibrate.github.io/quill-mention/dist/quill.mention.min.css" rel="stylesheet">
+    <!-- TODO: point to alibrate CDN-->
 
     <style>
-      .app-body {
-        margin: 0px;
-      }
+        .app-body {
+            margin: 0px;
+        }
 
-      .floating-toolbar {
-        position: fixed;
-        top: 0;
-        width: 100%;
-        background-color: white;
-      }
+        .floating-toolbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background-color: white;
+        }
 
-      #editor {
-        border: hidden !important;
-      }
+        #editor {
+            border: hidden !important;
+        }
 
-      .ql-container {
-        font-size: 20px;
-      }
+        .ql-container {
+            font-size: 20px;
+        }
 
-      .ql-mention-list-item {
-        display: flex;
-      }
-      .ql-mention-list-item.selected {
-        background: #fff;
-      }
-      .ql-mention-list-item .row {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-      }
-      .ql-mention-list-item .text {
-        font-weight: bold;
-        font-size: 14px;
-        color: #333;
-        vertical-align: middle;
-        display: inline-block;
-        line-height: 14px;
-        padding-left: 10px;
-      }
-      .ql-mention-list-item .avatar {
-        width: 34px;
-        height: 34px;
-        border-radius: 50%;
-        overflow: hidden;
-        display: flex;
-      }
-      .ql-mention-list-item .picture {
-        width: 100%;
-        border-radius: 0 !important;
-        object-fit: cover;
-      }
+        .ql-mention-list-item {
+            display: flex;
+        }
 
-      .ql-editor a, .ql-snow .ql-editor a {
-        text-decoration: none;
-      }
-      .ql-mention-denotation-char, a {
-        color: #06c;
-      }
+        .ql-mention-list-item.selected {
+            background: #fff;
+        }
+
+        .ql-mention-list-item .row {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+        }
+
+        .ql-mention-list-item .text {
+            font-weight: bold;
+            font-size: 14px;
+            color: #333;
+            vertical-align: middle;
+            display: inline-block;
+            line-height: 14px;
+            padding-left: 10px;
+        }
+
+        .ql-mention-list-item .avatar {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            overflow: hidden;
+            display: flex;
+        }
+
+        .ql-mention-list-item .picture {
+            width: 100%;
+            border-radius: 0 !important;
+            object-fit: cover;
+        }
+
+        .ql-editor a, .ql-snow .ql-editor a {
+            text-decoration: none;
+        }
+
+        .ql-mention-denotation-char, .ql-editor a {
+            color: #02A7E1 !important;
+        }
+
+        .mention {
+            background-color: #dbe6ef;
+        }
     </style>
   </head>
 
-  <body class="app-body">
+  <body className="app-body">
     <div id="editor"></div>
 
     <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
-    <script src="https://alibrate.github.io/quill-mention/dist/quill.mention.min.js"></script> <!-- TODO: point to alibrate CDN-->
+    <script src="https://alibrate.github.io/quill-mention/dist/quill.mention.min.js"></script>
+    <!-- TODO: point to alibrate CDN-->
 
     <script inline>
       /* Tip: una buena manera de mantener este archivo es abrirlo directamente en el navegador. */
@@ -100,11 +112,11 @@
           },
           renderItem: function (item) {
             return '<span class="row">' +
-                    '<span class="avatar">' +
-                    '<img class="picture" src="' + item.picture + '" alt="avatar" />' +
-                    '</span>' +
-                    '<span class="text">' + item.username + '</span>' +
-                    '</span>'
+                '<span class="avatar">' +
+                '<img class="picture" src="' + item.picture + '" alt="avatar" />' +
+                '</span>' +
+                '<span class="text">' + item.username + '</span>' +
+                '</span>'
           },
           onSelect: function (item, insertItem) {
             emitEvent({
@@ -163,14 +175,14 @@
 
       function handleImage(editor, data) {
         const base64 = data.data.substr(7);
-        const { index } = editor.getSelection();
+        const {index} = editor.getSelection();
         editor.insertEmbed(index, 'image', base64);
       }
 
       function handleObject(editor, data) {
         const content = JSON.parse(data);
         const isMentionsList = typeof content.mentions !== 'undefined'
-        if(isMentionsList) {
+        if (isMentionsList) {
           renderMentionsList(content.mentions.slice(0, 7));
           return;
         }
