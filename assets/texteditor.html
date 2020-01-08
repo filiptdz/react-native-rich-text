@@ -119,9 +119,13 @@
                 '</span>'
           },
           onSelect: function (item, insertItem) {
+            const plainText = item.value.replace(/<[^>]*>?/gm, '');
             emitEvent({
               type: 'mention-selected',
-              value: item
+              value: {
+                ...item,
+                value: plainText
+              }
             });
             insertItem(item)
           }
