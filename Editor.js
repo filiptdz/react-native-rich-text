@@ -60,6 +60,8 @@ export default class Editor extends React.Component {
       onMentionSelected(message.value)
       return false
     }
+
+    // default reaction
     onChangeText(message.value);
   }
 
@@ -83,35 +85,35 @@ export default class Editor extends React.Component {
               updateFormatFunc(this.updateFormat);
             }
             return (
-                <View style={[{ flex: 1 }, style]}>
-                  <WebView
-                      ref={EditorWebView}
-                      onLoad={() => this.post(value)}
-                      onError={error => console.error(error)}
-                      javaScriptEnabled
-                      domStorageEnabled
-                      bounces={false}
-                      scalesPageToFit={false}
-                      originWhitelist={['*']}
-                      source={
-                        Platform.OS === 'android'
-                            ? {
-                              uri: 'file:///android_asset/html/texteditor.html',
-                            }
-                            : (__DEV__) ?
-                            require('./assets/texteditor.html')
-                            :
-                            { uri:'./html/texteditor.html' }
-                      }
-                      style={{ backgroundColor: 'white', flex: 1 }}
-                      onMessage={this.onWebViewMessage}
-                  />
-                  <View
-                      style={{
-                        height: 0,
-                      }}
-                  />
-                </View>
+              <View style={[{ flex: 1 }, style]}>
+                <WebView
+                    ref={EditorWebView}
+                    onLoad={() => this.post(value)}
+                    onError={error => console.error(error)}
+                    javaScriptEnabled
+                    domStorageEnabled
+                    bounces={false}
+                    scalesPageToFit={false}
+                    originWhitelist={['*']}
+                    source={
+                      Platform.OS === 'android'
+                          ? {
+                            uri: 'file:///android_asset/html/texteditor.html',
+                          }
+                          : (__DEV__) ?
+                          require('./assets/texteditor.html')
+                          :
+                          { uri:'./html/texteditor.html' }
+                    }
+                    style={{ backgroundColor: 'white', flex: 1 }}
+                    onMessage={this.onWebViewMessage}
+                />
+                <View
+                    style={{
+                      height: 0,
+                    }}
+                />
+              </View>
             );
           }}
         </RichTextContext.Consumer>
