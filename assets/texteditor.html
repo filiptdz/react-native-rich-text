@@ -113,7 +113,7 @@
                 '</span>'
           },
           onSelect: function (item, insertItem) {
-            const plainText = item.value.replace(/<[^>]*>?/gm, '');
+            const plainText = item.value.replace(/<[^>]*>?/gm, '').replace(/\ufeff/g, ''); // no HTML and no BOM
             emitEvent({
               type: 'mention-selected',
               value: {
@@ -140,7 +140,7 @@
           try {
             emitEvent({
               type: 'content-change',
-              value: editor.root.innerHTML,
+              value: editor.root.innerHTML.replace(/\ufeff/g, ''), // no BOM characters
               mentions
             });
           } catch (e) {
