@@ -1,91 +1,84 @@
 <html>
   <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"/>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
-    <link href="https://alibrate.github.io/quill-mention/dist/quill.mention.min.css" rel="stylesheet">
-    <!-- TODO: point to alibrate CDN-->
+    <link href="https://alibrate.github.io/quill-mention/dist/quill.mention.min.css" rel="stylesheet"> <!-- TODO: point to alibrate CDN-->
 
     <style>
-        .app-body {
-            margin: 0px;
-        }
+      .app-body {
+        margin: 0px;
+      }
 
-        .floating-toolbar {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            background-color: white;
-        }
+      .floating-toolbar {
+        position: fixed;
+        top: 0;
+        width: 100%;
+        background-color: white;
+      }
 
-        #editor {
-            border: hidden !important;
-        }
+      #editor {
+        border: hidden !important;
+      }
 
-        .ql-container {
-            font-size: 20px;
-        }
+      .ql-container {
+        font-size: 20px;
+      }
 
-        .ql-mention-list-item {
-            display: flex;
-        }
+      .ql-mention-list-item {
+        display: flex;
+      }
+      .ql-mention-list-item.selected {
+        background: #fff;
+      }
+      .ql-mention-list-item .row {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+      }
+      .ql-mention-list-item .text {
+        font-weight: bold;
+        font-size: 14px;
+        color: #333;
+        vertical-align: middle;
+        display: inline-block;
+        line-height: 14px;
+        padding-left: 10px;
+      }
+      .ql-mention-list-item .avatar {
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
+        overflow: hidden;
+        display: flex;
+      }
+      .ql-mention-list-item .picture {
+        width: 100%;
+        border-radius: 0 !important;
+        object-fit: cover;
+      }
 
-        .ql-mention-list-item.selected {
-            background: #fff;
-        }
+      .ql-editor a, .ql-snow .ql-editor a {
+        text-decoration: none;
+      }
+      .ql-mention-denotation-char, .ql-editor a {
+        color: #02A7E1 !important;
+      }
 
-        .ql-mention-list-item .row {
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-        }
-
-        .ql-mention-list-item .text {
-            font-weight: bold;
-            font-size: 14px;
-            color: #333;
-            vertical-align: middle;
-            display: inline-block;
-            line-height: 14px;
-            padding-left: 10px;
-        }
-
-        .ql-mention-list-item .avatar {
-            width: 34px;
-            height: 34px;
-            border-radius: 50%;
-            overflow: hidden;
-            display: flex;
-        }
-
-        .ql-mention-list-item .picture {
-            width: 100%;
-            border-radius: 0 !important;
-            object-fit: cover;
-        }
-
-        .ql-editor a, .ql-snow .ql-editor a {
-            text-decoration: none;
-        }
-
-        .ql-mention-denotation-char, .ql-editor a {
-            color: #02A7E1 !important;
-        }
-
-        .mention {
-            background-color: #dbe6ef;
-        }
+      .mention {
+        background-color: #dbe6ef;
+      }
     </style>
   </head>
 
-  <body className="app-body">
+  <body class="app-body">
     <div id="editor"></div>
 
-    <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
-    <script src="https://alibrate.github.io/quill-mention/dist/quill.mention.min.js"></script>
-    <!-- TODO: point to alibrate CDN-->
+    <script src="https://cdn.quilljs.com/1.3.6/quill.min.js?refresh=1" charset="UTF-8"></script>
+    <script src="https://alibrate.github.io/quill-mention/dist/quill.mention.min.js?refresh=1" charset="UTF-8"></script> <!-- TODO: point to alibrate CDN-->
 
-    <script inline>
+    <script inline charset="utf-8">
       /* Tip: una buena manera de mantener este archivo es abrirlo directamente en el navegador. */
 
       // este es un placeholder de un método que servirá para diferir la muestra de los resultados de la api
@@ -95,6 +88,7 @@
         const mentionModuleOptions = {
           allowedChars: /^[A-Za-z\s]*$/,
           mentionDenotationChars: ['@'],
+          dataAttributes: ['id', 'value', 'type', 'denotationChar', 'link', 'target'],
           source: function (searchTerm, renderList) {
             if (!renderMentionsList) {
               // siendo que no podemos esperar la respuesta de la api, diferimos la ejecución del callback mediante una variable global
@@ -142,10 +136,16 @@
 
         // Toda vez que se edita el contenido, se envia el contenido a React Native
         editor.on('text-change', () => {
-          emitEvent({
-            type: 'content-change',
-            value: editor.root.innerHTML
-          });
+          const mentions = deduceMentionsIndices (editor.getContents(), editor.root.innerHTML)
+          try {
+            emitEvent({
+              type: 'content-change',
+              value: editor.root.innerHTML,
+              mentions
+            });
+          } catch (e) {
+            emitEvent({e});
+          }
         });
 
         // Recepción de mensajes de React Native
@@ -179,14 +179,14 @@
 
       function handleImage(editor, data) {
         const base64 = data.data.substr(7);
-        const {index} = editor.getSelection();
+        const { index } = editor.getSelection();
         editor.insertEmbed(index, 'image', base64);
       }
 
       function handleObject(editor, data) {
         const content = JSON.parse(data);
         const isMentionsList = typeof content.mentions !== 'undefined'
-        if (isMentionsList) {
+        if(isMentionsList) {
           renderMentionsList(content.mentions.slice(0, 7));
           return;
         }
@@ -237,6 +237,54 @@
           default:
             break;
         }
+      }
+
+      function deduceMentionsIndices(contentChunks, html) {
+        const rawMentions = contentChunks
+            .filter(chunk => typeof chunk.insert.mention !== 'undefined')
+            .map(chunk => ({
+              ...chunk,
+              word: extractPlainText(chunk.insert.mention.value)
+            }))
+
+        if (rawMentions.length === 0)
+          return []
+
+        const plainText = extractPlainText(html)
+
+        const { mentions } = rawMentions.reduce(calculateOffset, { plainText, startFrom: 0, mentions: [] })
+
+        return mentions
+      }
+
+      function  calculateOffset(params, rawMention) {
+        const { plainText, startFrom, mentions } = params
+        const word = rawMention.word
+
+        const offset = plainText.slice(startFrom).indexOf('@' + word)
+
+        const mention = {
+          offset: startFrom + offset, // the place where the mention starts
+          length: word.length, // only the word, without the @ symbol
+          type: rawMention.insert.mention.type,
+          id: rawMention.insert.mention.id
+        }
+
+        mentions.push(mention)
+
+        return {
+          plainText,
+          startFrom: mention.offset + mention.length + 1,
+          mentions
+        }
+      }
+
+      function extractPlainText (html) {
+        let text = html || ''
+        // as there is html nested inside some html attributes, we need a recursive strategy to clean up the html
+        while (text !== (text = text.replace(/<[^<>]*>/g, '')));
+
+        return text.replace(/\ufeff/g, '') // replace BOM character if exists
       }
     </script>
   </body>
