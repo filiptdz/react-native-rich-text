@@ -21,13 +21,35 @@
       #editor {
         border: hidden !important;
       }
-
       .ql-container {
         font-size: 20px;
+        display: flex !important;
+        flex-direction: column;
+        justify-content: stretch;
+        align-items: stretch;
+        height: 100vh;
       }
-
+      .ql-mention-list-container {
+        position: relative !important;
+        flex: 3;
+        margin-top: 10px;
+        min-height: calc(100vh - 50px);
+        top: auto !important;
+        bottom: auto !important;
+        z-index: 9999;
+        overflow: auto;
+        /* height: 70vh; */
+        width: 100%;
+        height: 100%;
+        background: #fff;
+        box-shadow: none;
+        border-color: #DDDDDD;
+        border-radius: 0px;
+      }
       .ql-mention-list-item {
         display: flex;
+        border-bottom: 1px solid #DDDDDD;
+        padding: 15px 10px;
       }
       .ql-mention-list-item.selected {
         background: #fff;
@@ -53,19 +75,19 @@
         overflow: hidden;
         display: flex;
       }
+      .ql-editor {
+      }
       .ql-mention-list-item .picture {
         width: 100%;
         border-radius: 0 !important;
         object-fit: cover;
       }
-
       .ql-editor a, .ql-snow .ql-editor a {
         text-decoration: none;
       }
       .ql-mention-denotation-char, .ql-editor a {
         color: #02A7E1 !important;
       }
-
       .mention {
         background-color: transparent;
       }
@@ -94,7 +116,6 @@
               // siendo que no podemos esperar la respuesta de la api, diferimos la ejecución del callback mediante una variable global
               renderMentionsList = renderList
             }
-
             if (searchTerm.length === 0) {
               return
             }
@@ -190,7 +211,6 @@
           renderMentionsList(content.mentions.slice(0, 7));
           return;
         }
-
         editor.setContents(content);
       }
 
