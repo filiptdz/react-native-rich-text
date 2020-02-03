@@ -44,62 +44,96 @@ export default class Editor extends React.Component {
 
   updateFormat = (format, extraData = '') => this.post('$' + format + '$' + extraData);
 
+  onWebViewMessage = (evt) => {
+    const { onChangeText, onMentionSelected } = this.props;
+    const messageString = evt.nativeEvent.data;
+
+    if (messageString === '')
+      return false
+
+    const message = JSON.parse(messageString)
+    if(message.type === 'mention-start') {
+      this.handleMentionStart(message.value);
+      return false
+    }
+    if(message.type === 'mention-selected') {
+      onMentionSelected(message.value)
+      return false
+    }
+
+    onChangeText({
+      text: message.value,
+      mentions: message.mentions
+    });
+  }
+
+  handleMentionStart(word) {
+    const { onMentionStart } = this.props;
+    const callback = (mentions = []) => {
+      // retrive the mentions to the webview
+      EditorWebView.current.postMessage(JSON.stringify({ mentions }));
+    }
+
+    onMentionStart(word, callback)
+  }
+
   render() {
     const { keyboardHeight } = this.state;
-    const { onChangeText, style } = this.props;
+    const { style } = this.props;
+
     return (
-      <RichTextContext.Consumer>
-        {({ setFormat, updateFormatFunc, value }) => {
-          if (!setFormat) {
-            updateFormatFunc(this.updateFormat);
-          }
-          return (
-            <View style={[{ flex: 1 }, style]}>
-              <WebView
-                ref={EditorWebView}
-                onLoad={() => this.post(value)}
-                onError={error => console.error(error)}
-                javaScriptEnabled
-                domStorageEnabled
-                bounces={false}
-                scalesPageToFit={false}
-                originWhitelist={['*']}
-                source={
-                  Platform.OS === 'android'
-                    ? {
-                      uri: 'file:///android_asset/html/texteditor.html',
+        <RichTextContext.Consumer>
+          {({ setFormat, updateFormatFunc, value }) => {
+            if (!setFormat) {
+              updateFormatFunc(this.updateFormat);
+            }
+            return (
+              <View style={[{ flex: 1 }, style]}>
+                <WebView
+                    ref={EditorWebView}
+                    onLoad={() => this.post(value)}
+                    onError={error => console.error(error)}
+                    javaScriptEnabled
+                    domStorageEnabled
+                    bounces={false}
+                    scalesPageToFit={false}
+                    originWhitelist={['*']}
+                    source={
+                      Platform.OS === 'android'
+                          ? {
+                            uri: 'file:///android_asset/html/texteditor.html',
+                          }
+                          : (__DEV__) ?
+                          require('./assets/texteditor.html')
+                          :
+                          { uri:'./html/texteditor.html' }
                     }
-                    : (__DEV__) ?
-                      require('./assets/texteditor.html')
-                      :
-                      { uri:'./html/texteditor.html' }
-                }
-                style={{ backgroundColor: 'white', flex: 1 }}
-                onMessage={(evt) => {
-                  if (evt.nativeEvent.data !== '') {
-                    onChangeText(evt.nativeEvent.data);
-                  }
-                }}
-              />
-              <View
-                style={{
-                  height: 0,
-                }}
-              />
-            </View>
-          );
-        }}
-      </RichTextContext.Consumer>
+                    style={{ backgroundColor: 'white', flex: 1 }}
+                    onMessage={this.onWebViewMessage}
+                />
+                <View
+                    style={{
+                      height: 0,
+                    }}
+                />
+              </View>
+            );
+          }}
+        </RichTextContext.Consumer>
     );
   }
 }
 
 Editor.propTypes = {
   onChangeText: PropTypes.func,
-  style: PropTypes.object,
+  onMentionStart: PropTypes.func,
+  onMentionSelected: PropTypes.func,
+  style: PropTypes.shape({})
 };
 Editor.defaultProps = {
   onChangeText: () => {},
+  onMentionStart: () => {},
+  onMentionSelected: () => {},
   style: {
     zIndex: -1,
   },
