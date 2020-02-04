@@ -108,7 +108,7 @@
 
       try {
         const mentionModuleOptions = {
-          allowedChars: /^[A-Za-z\s]*$/,
+          allowedChars: /^[A-Za-z.\s]*$/,
           mentionDenotationChars: ['@'],
           dataAttributes: ['id', 'value', 'type', 'denotationChar', 'link', 'target'],
           source: function (searchTerm, renderList) {
