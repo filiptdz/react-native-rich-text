@@ -105,12 +105,18 @@
 
       // este es un placeholder de un método que servirá para diferir la muestra de los resultados de la api
       let renderMentionsList = null;
+      if (window.addEventListener) {
+          document.addEventListener('click', function (e) {
+                  e.preventDefault();         // Comment this line to enable the link tag again.
+          });
+      }
 
       try {
         const mentionModuleOptions = {
           allowedChars: /^[A-Za-z.\s]*$/,
           mentionDenotationChars: ['@'],
           dataAttributes: ['id', 'value', 'type', 'denotationChar', 'link', 'target'],
+          linkTarget: '',
           source: function (searchTerm, renderList) {
             if (!renderMentionsList) {
               // siendo que no podemos esperar la respuesta de la api, diferimos la ejecución del callback mediante una variable global
