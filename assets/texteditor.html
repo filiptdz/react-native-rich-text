@@ -111,63 +111,60 @@
           });
       }
 
-      try {
-        const mentionModuleOptions = {
-          allowedChars: /^[A-Za-z.\s]*$/,
-          mentionDenotationChars: ['@'],
-          dataAttributes: ['id', 'value', 'type', 'denotationChar', 'link', 'target'],
-          linkTarget: '',
-          source: function (searchTerm, renderList) {
-            if (!renderMentionsList) {
-              // siendo que no podemos esperar la respuesta de la api, diferimos la ejecución del callback mediante una variable global
-              renderMentionsList = renderList
-            }
-            if (searchTerm.length === 0) {
-              return
-            }
-
-            emitEvent({
-              type: 'mention-start',
-              value: searchTerm
-            })
-          },
-          renderItem: function (item) {
-            return '<span class="row">' +
-                '<span class="avatar">' +
-                '<img class="picture" src="' + item.picture + '" alt="avatar" />' +
-                '</span>' +
-                '<span class="text">' + item.username + '</span>' +
-                '</span>'
-          },
-          onSelect: function (item, insertItem) {
-            const plainText = item.value.replace(/<[^>]*>?/gm, '').replace(/\ufeff/g, ''); // no HTML and no BOM
-            emitEvent({
-              type: 'mention-selected',
-              value: {
-                ...item,
-                value: plainText
-              }
-            });
-            insertItem(item)
-          }
-        }
-
-        const editor = new Quill('#editor', {
+        const quill = new Quill('#editor', {
           modules: {
             toolbar: null,
-            mention: mentionModuleOptions
+            mention: {
+              allowedChars: /^[A-Za-z.\s]*$/,
+              mentionDenotationChars: ['@'],
+              dataAttributes: ['id', 'value', 'type', 'denotationChar', 'link', 'target'],
+              linkTarget: '',
+              source: function (searchTerm, renderList) {
+                if (!renderMentionsList) {
+                  // siendo que no podemos esperar la respuesta de la api, diferimos la ejecución del callback mediante una variable global
+                  renderMentionsList = renderList
+                }
+                if (searchTerm.length === 0) {
+                  return
+                }
+
+                emitEvent({
+                  type: 'mention-start',
+                  value: searchTerm
+                })
+              },
+              renderItem: function (item) {
+                return '<span class="row">' +
+                    '<span class="avatar">' +
+                    '<img class="picture" src="' + item.picture + '" alt="avatar" />' +
+                    '</span>' +
+                    '<span class="text">' + item.username + '</span>' +
+                    '</span>'
+              },
+              onSelect: function (item, insertItem) {
+                const plainText = item.value.replace(/<[^>]*>?/gm, '').replace(/\ufeff/g, ''); // no HTML and no BOM
+                emitEvent({
+                  type: 'mention-selected',
+                  value: {
+                    ...item,
+                    value: plainText
+                  }
+                });
+                insertItem(item)
+              }
+            }
           },
           placeholder: 'Comparte un texto o una foto',
           theme: 'snow',
         });
 
         // Toda vez que se edita el contenido, se envia el contenido a React Native
-        editor.on('text-change', () => {
-          const mentions = deduceMentionsIndices (editor.getContents(), editor.root.innerHTML)
+        quill.on('text-change', () => {
+          const mentions = deduceMentionsIndices (quill.getContents(), quill.root.innerHTML)
           try {
             emitEvent({
               type: 'content-change',
-              value: editor.root.innerHTML.replace(/\ufeff/g, ''), // no BOM characters
+              value: quill.root.innerHTML.replace(/\ufeff/g, ''), // no BOM characters
               mentions
             });
           } catch (e) {
@@ -176,88 +173,82 @@
         });
 
         // Recepción de mensajes de React Native
-        handleExternalEvents(editor);
-      } catch (e) {
-        emitEvent({
-          type: 'error',
-          value: "Error initializing editor"
-        });
-      }
+        handleExternalEvents(quill);
 
       function emitEvent(event) {
         window.postMessage(JSON.stringify(event), '*');
       }
 
-      function handleExternalEvents(editor) {
+      function handleExternalEvents(quill) {
         document.addEventListener('message', ({data}) => {
           if (data.substr(0, 7) === '$image$') {
-            handleImage(editor, data);
+            handleImage(quill, data);
           } else if (data[0] === '$') {
-            applyFormat(editor, data)
+            applyFormat(quill, data)
           } else if (data[0] === '{') {
-            handleObject(editor, data)
+            handleObject(quill, data)
           } else if (data[0] === '<') {
-            editor.setContents(editor.clipboard.convert(data, 'silent'))
+            quill.setContents(quill.clipboard.convert(data, 'silent'))
           } else {
-            editor.focus()
+            quill.focus()
           }
         });
       }
 
-      function handleImage(editor, data) {
+      function handleImage(quill, data) {
         const base64 = data.data.substr(7);
-        const { index } = editor.getSelection();
-        editor.insertEmbed(index, 'image', base64);
+        const { index } = quill.getSelection();
+        quill.insertEmbed(index, 'image', base64);
       }
 
-      function handleObject(editor, data) {
+      function handleObject(quill, data) {
         const content = JSON.parse(data);
         const isMentionsList = typeof content.mentions !== 'undefined'
         if(isMentionsList) {
           renderMentionsList(content.mentions.slice(0, 7));
           return;
         }
-        editor.setContents(content);
+        quill.setContents(content);
       }
 
-      function applyFormat(editor, data) {
+      function applyFormat(quill, data) {
         const updatedSelector = data.slice(1, data.length - 1);
-        const currentFormat = editor.getFormat();
+        const currentFormat = quill.getFormat();
         switch (updatedSelector) {
           case 'bold': {
-            editor.format(updatedSelector, !currentFormat.bold, 'user');
+            quill.format(updatedSelector, !currentFormat.bold, 'user');
             break;
           }
           case 'italic': {
-            editor.format(updatedSelector, !currentFormat.italic, 'user');
+            quill.format(updatedSelector, !currentFormat.italic, 'user');
             break;
           }
           case 'underline': {
-            editor.format(updatedSelector, !currentFormat.underline, 'user');
+            quill.format(updatedSelector, !currentFormat.underline, 'user');
             break;
           }
           case 'size': {
             const updatedFormat = currentFormat.size === 'large' ? null : 'large';
-            editor.format('size', updatedFormat, 'user');
+            quill.format('size', updatedFormat, 'user');
             break;
           }
           case 'h1': {
             const updatedFormat = currentFormat.header === 1 ? null : 1;
-            editor.format('header', updatedFormat, 'user');
+            quill.format('header', updatedFormat, 'user');
             break;
           }
           case 'ul': {
             const updatedFormat = currentFormat.list === 'bullet' ? null : 'bullet';
-            editor.format('list', updatedFormat, 'user');
+            quill.format('list', updatedFormat, 'user');
             break;
           }
           case 'ol': {
             const updatedFormat = currentFormat.list === 'ordered' ? null : 'ordered';
-            editor.format('list', updatedFormat, 'user');
+            quill.format('list', updatedFormat, 'user');
             break;
           }
           case 'code-block': {
-            editor.format(updatedSelector, !currentFormat['code-block'], 'user');
+            quill.format(updatedSelector, !currentFormat['code-block'], 'user');
             break;
           }
           default:
