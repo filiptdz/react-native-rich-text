@@ -40,7 +40,7 @@ export default class Editor extends React.Component {
     this.setState(p => ({ ...p, keyboardHeight: 0 }));
   };
 
-  post = value => EditorWebView.current.postMessage(value);
+  post = (value) => EditorWebView.current.postMessage(JSON.stringify(value));
 
   updateFormat = (format, extraData = '') => this.post('$' + format + '$' + extraData);
 
@@ -83,7 +83,7 @@ export default class Editor extends React.Component {
 
     return (
         <RichTextContext.Consumer>
-          {({ setFormat, updateFormatFunc, value }) => {
+          {({ setFormat, updateFormatFunc, value, placeholder = '' }) => {
             if (!setFormat) {
               updateFormatFunc(this.updateFormat);
             }
@@ -91,7 +91,7 @@ export default class Editor extends React.Component {
               <View style={[{ flex: 1 }, style]}>
                 <WebView
                     ref={EditorWebView}
-                    onLoad={() => this.post(value)}
+                    onLoad={() => this.post({ value, placeholder })}
                     onError={error => console.error(error)}
                     javaScriptEnabled
                     domStorageEnabled

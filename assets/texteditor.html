@@ -5,7 +5,7 @@
 
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
     <link href="https://alibrate.github.io/quill-mention/dist/quill.mention.min.css" rel="stylesheet"> <!-- TODO: point to alibrate CDN-->
-
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
     <style>
       .app-body {
         margin: 0px;
@@ -23,10 +23,12 @@
       }
       .ql-container {
         font-size: 20px;
+        font-family: 'Merriweather', serif;
         display: flex !important;
         flex-direction: column;
         justify-content: stretch;
         align-items: stretch;
+        color: #545454;
         height: 100vh;
       }
       .ql-mention-list-container {
@@ -76,6 +78,11 @@
         display: flex;
       }
       .ql-editor {
+
+      }
+      .ql-blank::before{
+        font-style: inherit !important;
+        color: #C9C9C9 !important;
       }
       .ql-mention-list-item .picture {
         width: 100%;
@@ -110,7 +117,6 @@
                   e.preventDefault();         // Comment this line to enable the link tag again.
           });
       }
-
         const quill = new Quill('#editor', {
           modules: {
             toolbar: null,
@@ -180,15 +186,17 @@
       }
 
       function handleExternalEvents(quill) {
-        document.addEventListener('message', ({data}) => {
-          if (data.substr(0, 7) === '$image$') {
-            handleImage(quill, data);
-          } else if (data[0] === '$') {
-            applyFormat(quill, data)
-          } else if (data[0] === '{') {
-            handleObject(quill, data)
-          } else if (data[0] === '<') {
-            quill.setContents(quill.clipboard.convert(data, 'silent'))
+        document.addEventListener('message', ({ data }) => {
+          const { value, placeholder = '' } = JSON.parse(data)
+          quill.root.dataset.placeholder = placeholder;
+          if (value.substr(0, 7) === '$image$') {
+            handleImage(quill, value);
+          } else if (value[0] === '$') {
+            applyFormat(quill, value)
+          } else if (value[0] === '{') {
+            handleObject(quill, value)
+          } else if (value[0] === '<') {
+            quill.setContents(quill.clipboard.convert(value, 'silent'))
           } else {
             quill.focus()
           }

@@ -25,7 +25,7 @@ export default class RichText extends React.Component {
   updateFormatFunc = setFormat => this.setState(p => ({ ...p, setFormat }));
 
   render() {
-    const { children, value } = this.props;
+    const { children, value, placeholder } = this.props;
     const { setFormat } = this.state;
     return (
       <View style={{ flex: 1 }}>
@@ -34,6 +34,7 @@ export default class RichText extends React.Component {
             setFormat,
             updateFormatFunc: this.updateFormatFunc,
             value,
+            placeholder
           }}
         >
           {children}
@@ -46,7 +47,9 @@ export default class RichText extends React.Component {
 RichText.propTypes = {
   children: PropTypes.oneOfType([PropTypes.array, PropTypes.object]).isRequired,
   value: PropTypes.string,
+  placeholder: PropTypes.string
 };
 RichText.defaultProps = {
   value: '',
+  placeholder: ''
 };
