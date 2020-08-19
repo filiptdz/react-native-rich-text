@@ -42,7 +42,7 @@ export default class Editor extends React.Component {
 
   post = (value) => EditorWebView.current.postMessage(JSON.stringify(value));
 
-  updateFormat = (format, extraData = '') => this.post('$' + format + '$' + extraData);
+  updateFormat = (format, extraData = '') => this.post({ value: '$' + format + '$' + extraData });
 
   onWebViewMessage = (evt) => {
     const { onChangeText, onMentionSelected } = this.props;

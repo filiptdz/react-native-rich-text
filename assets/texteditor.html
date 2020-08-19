@@ -188,7 +188,9 @@
       function handleExternalEvents(quill) {
         document.addEventListener('message', ({ data }) => {
           const { value, placeholder = '' } = JSON.parse(data)
-          quill.root.dataset.placeholder = placeholder;
+          if (placeholder) {
+            quill.root.dataset.placeholder = placeholder;
+          }
           if (value.substr(0, 7) === '$image$') {
             handleImage(quill, value);
           } else if (value[0] === '$') {
