@@ -71,7 +71,7 @@ export default class Editor extends React.Component {
     const { onMentionStart } = this.props;
     const callback = (mentions = []) => {
       // retrive the mentions to the webview
-      EditorWebView.current.postMessage(JSON.stringify({ mentions }));
+      EditorWebView.current.postMessage(JSON.stringify({ value: JSON.stringify({ mentions }) }));
     }
 
     onMentionStart(word, callback)
