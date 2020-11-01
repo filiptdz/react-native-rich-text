@@ -1,17 +1,17 @@
 import * as React from 'react';
-import { StyleSheet, View, Text } from 'react-native';
-import RichText from 'react-native-rich-text';
+import { StyleSheet, View } from 'react-native';
+import { RichTextEditor } from 'react-native-rich-text';
 
 export default function App() {
-  const [result, setResult] = React.useState<number | undefined>();
+  const [value, setValue] = React.useState<string | undefined>();
 
   React.useEffect(() => {
-    RichText.multiply(3, 7).then(setResult);
+    setTimeout(() => setValue('oioiooi'), 3000);
   }, []);
 
   return (
     <View style={styles.container}>
-      <Text>Result: {result}</Text>
+      <RichTextEditor style={{ height: 200, width: 200 }} />
     </View>
   );
 }
