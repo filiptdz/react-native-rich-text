@@ -1,3 +1,11 @@
+//
+//  RichTextEditor.swift
+//  RichText
+//
+//  Created by Filipe Degrazia on 03/11/20.
+//  Copyright © 2020 Facebook. All rights reserved.
+//
+
 import UIKit
 
 @objc(RNRTEditor)
