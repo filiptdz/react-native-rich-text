@@ -26,6 +26,10 @@
     "prepare": "bob build",
     "release": "release-it",
     "example": "yarn --cwd example",
+    "example:ios": "cd example && yarn ios",
+    "example:ios --hard": "yarn bootstrap && cd example && yarn ios",
+    "example:android": "cd example && yarn android",
+    "example:android --hard": "yarn bootstrap && cd example && yarn android",
     "pods": "cd example && pod-install --quiet",
     "bootstrap": "yarn example && yarn && yarn pods"
   },
@@ -122,7 +126,8 @@
           "trailingComma": "es5",
           "useTabs": false
         }
-      ]
+      ],
+      "react-native/no-inline-styles": "off"
     }
   },
   "eslintIgnore": [

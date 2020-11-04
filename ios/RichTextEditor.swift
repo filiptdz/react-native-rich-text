@@ -20,20 +20,22 @@ class RichTextEditorManager: RCTViewManager {
 }
 
 class RichTextEditor: UIView {
-  var textField: UITextField!
+  var textView: UITextView!
   @objc var value: NSString = "" {
     didSet {
-      textField.text = String(value)
+      textView.text = String(value)
     }
   }
 
   override init(frame: CGRect) {
     super.init(frame: frame)
-    textField = UITextField()
-    textField.text = "Enter your text"
-    textField.textAlignment = .center
-    textField.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-    self.addSubview(textField)
+    textView = UITextView()
+    textView.frame = frame
+    textView.backgroundColor = #colorLiteral(red: 0.4392156899, green: 0.01176470611, blue: 0.1921568662, alpha: 1)
+    textView.text = "Enter your text"
+    textView.textAlignment = .center
+    textView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+    self.addSubview(textView)
   }
 
   required init?(coder aDecoder: NSCoder) {
