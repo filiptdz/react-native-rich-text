@@ -15,7 +15,10 @@ export default function App() {
       <View style={{ flex: 1 }}>
         <View style={{ flex: 1 }} />
         <View style={{ flex: 1, flexDirection: 'row' }}>
-          <RichTextEditor value={value} />
+          <RichTextEditor
+            value={value}
+            onChangeText={(newValue: string) => console.log(newValue)}
+          />
           <View style={{ flex: 1 }} />
         </View>
       </View>

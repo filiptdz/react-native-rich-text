@@ -8,9 +8,11 @@
 
 #import "React/RCTBridgeModule.h"
 #import "React/RCTViewManager.h"
+#import "React/RCTEventEmitter.h"
 
 @interface RCT_EXTERN_MODULE(RNRTEditor, NSObject)
 
 RCT_EXPORT_VIEW_PROPERTY(value, NSString)
+RCT_EXPORT_VIEW_PROPERTY(onChangeText, RCTDirectEventBlock)
 
 @end
