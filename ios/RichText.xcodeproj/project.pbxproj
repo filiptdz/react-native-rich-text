@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		D4787C822551981D003CC28F /* RichTextEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4787C812551981D003CC28F /* RichTextEditor.swift */; };
 		D4787C8C2552DA1A003CC28F /* RichTextEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = D4787C8825519926003CC28F /* RichTextEditor.m */; };
+		D4787C9725544C66003CC28F /* UITextView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4787C9625544C66003CC28F /* UITextView+.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -27,6 +28,7 @@
 		134814201AA4EA6300B7C361 /* libRichText.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libRichText.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		D4787C812551981D003CC28F /* RichTextEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RichTextEditor.swift; sourceTree = "<group>"; };
 		D4787C8825519926003CC28F /* RichTextEditor.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RichTextEditor.m; sourceTree = "<group>"; };
+		D4787C9625544C66003CC28F /* UITextView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextView+.swift"; sourceTree = "<group>"; };
 		F4FF95D5245B92E700C19C63 /* RichText-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RichText-Bridging-Header.h"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -52,6 +54,7 @@
 		58B511D21A9E6C8500147676 = {
 			isa = PBXGroup;
 			children = (
+				D4787C9625544C66003CC28F /* UITextView+.swift */,
 				D4787C8825519926003CC28F /* RichTextEditor.m */,
 				D4787C812551981D003CC28F /* RichTextEditor.swift */,
 				F4FF95D5245B92E700C19C63 /* RichText-Bridging-Header.h */,
@@ -117,6 +120,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D4787C8C2552DA1A003CC28F /* RichTextEditor.m in Sources */,
+				D4787C9725544C66003CC28F /* UITextView+.swift in Sources */,
 				D4787C822551981D003CC28F /* RichTextEditor.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

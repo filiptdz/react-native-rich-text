@@ -23,9 +23,12 @@ class RichTextEditor: UIView, UITextViewDelegate {
   var textView: UITextView!
   @objc var value: NSString = "" {
     didSet {
-      textView.text = String(value)
+      let htmlData = value.data(using: String.Encoding.unicode.rawValue)
+      let options = [NSAttributedString.DocumentReadingOptionKey.documentType: NSAttributedString.DocumentType.html]
+      let attributedString = try? NSMutableAttributedString(data: htmlData ?? Data(), options: options, documentAttributes: nil)
+      textView.attributedText = attributedString
       if onChangeText != nil {
-        onChangeText!(["newValue": textView.text])
+        onChangeText!(["newValue": textView.attributedTextHtml])
       }
     }
   }
@@ -49,7 +52,7 @@ class RichTextEditor: UIView, UITextViewDelegate {
 
   func textViewDidChange(_ textView: UITextView) {
     if onChangeText != nil {
-      onChangeText!(["newValue": textView.text])
+      onChangeText!(["newValue": textView.attributedTextHtml])
     }
   }
 }

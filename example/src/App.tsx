@@ -6,7 +6,7 @@ export default function App() {
   const [value, setValue] = React.useState<string | undefined>('initial text');
 
   React.useEffect(() => {
-    setTimeout(() => setValue('oioiooi'), 3000);
+    setTimeout(() => setValue('oi<h1>oio</h1>oi'), 3000);
   }, []);
 
   return (
