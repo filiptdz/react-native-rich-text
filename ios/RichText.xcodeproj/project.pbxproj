@@ -10,6 +10,8 @@
 		D4787C822551981D003CC28F /* RichTextEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4787C812551981D003CC28F /* RichTextEditor.swift */; };
 		D4787C8C2552DA1A003CC28F /* RichTextEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = D4787C8825519926003CC28F /* RichTextEditor.m */; };
 		D4787C9725544C66003CC28F /* UITextView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4787C9625544C66003CC28F /* UITextView+.swift */; };
+		D4787C9A255474DC003CC28F /* RichTextStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4787C99255474DC003CC28F /* RichTextStyle.swift */; };
+		D4787C9E25549C04003CC28F /* RichTextEditor+setStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4787C9D25549C04003CC28F /* RichTextEditor+setStyle.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -29,6 +31,8 @@
 		D4787C812551981D003CC28F /* RichTextEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RichTextEditor.swift; sourceTree = "<group>"; };
 		D4787C8825519926003CC28F /* RichTextEditor.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RichTextEditor.m; sourceTree = "<group>"; };
 		D4787C9625544C66003CC28F /* UITextView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextView+.swift"; sourceTree = "<group>"; };
+		D4787C99255474DC003CC28F /* RichTextStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RichTextStyle.swift; sourceTree = "<group>"; };
+		D4787C9D25549C04003CC28F /* RichTextEditor+setStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RichTextEditor+setStyle.swift"; sourceTree = "<group>"; };
 		F4FF95D5245B92E700C19C63 /* RichText-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RichText-Bridging-Header.h"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -56,7 +60,9 @@
 			children = (
 				D4787C9625544C66003CC28F /* UITextView+.swift */,
 				D4787C8825519926003CC28F /* RichTextEditor.m */,
+				D4787C99255474DC003CC28F /* RichTextStyle.swift */,
 				D4787C812551981D003CC28F /* RichTextEditor.swift */,
+				D4787C9D25549C04003CC28F /* RichTextEditor+setStyle.swift */,
 				F4FF95D5245B92E700C19C63 /* RichText-Bridging-Header.h */,
 				134814211AA4EA7D00B7C361 /* Products */,
 			);
@@ -121,6 +127,8 @@
 			files = (
 				D4787C8C2552DA1A003CC28F /* RichTextEditor.m in Sources */,
 				D4787C9725544C66003CC28F /* UITextView+.swift in Sources */,
+				D4787C9A255474DC003CC28F /* RichTextStyle.swift in Sources */,
+				D4787C9E25549C04003CC28F /* RichTextEditor+setStyle.swift in Sources */,
 				D4787C822551981D003CC28F /* RichTextEditor.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
