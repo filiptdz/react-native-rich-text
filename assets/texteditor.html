@@ -1,318 +1,345 @@
 <html>
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 
-    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
-    <link href="https://alibrate.github.io/quill-mention/dist/quill.mention.min.css" rel="stylesheet"> <!-- TODO: point to alibrate CDN-->
-    <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
-    <style>
-      .app-body {
-        margin: 0px;
-      }
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 
-      .floating-toolbar {
-        position: fixed;
-        top: 0;
-        width: 100%;
-        background-color: white;
-      }
+  <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+  <link href="https://alibrate.github.io/quill-mention/dist/quill.mention.min.css" rel="stylesheet">
+  <!-- TODO: point to alibrate CDN-->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&display=swap"
+    rel="stylesheet">
+  <style>
+    .app-body {
+      margin: 0px;
+    }
 
-      #editor {
-        border: hidden !important;
-      }
-      .ql-container {
-        font-size: 16px;
-        font-family: 'Merriweather', serif;
-        display: flex !important;
-        flex-direction: column;
-        justify-content: stretch;
-        align-items: stretch;
-        color: #545454;
-        height: 100vh;
-      }
-      .ql-mention-list-container {
-        position: relative !important;
-        flex: 3;
-        margin-top: 10px;
-        min-height: calc(100vh - 50px);
-        top: auto !important;
-        bottom: auto !important;
-        z-index: 9999;
-        overflow: auto;
-        /* height: 70vh; */
-        width: 100%;
-        height: 100%;
-        background: #fff;
-        box-shadow: none;
-        border-color: #DDDDDD;
-        border-radius: 0px;
-      }
-      .ql-mention-list-item {
-        display: flex;
-        border-bottom: 1px solid #DDDDDD;
-        padding: 15px 10px;
-      }
-      .ql-mention-list-item.selected {
-        background: #fff;
-      }
-      .ql-mention-list-item .row {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-      }
-      .ql-mention-list-item .text {
-        font-weight: bold;
-        font-size: 14px;
-        color: #333;
-        vertical-align: middle;
-        display: inline-block;
-        line-height: 14px;
-        padding-left: 10px;
-      }
-      .ql-mention-list-item .avatar {
-        width: 34px;
-        height: 34px;
-        border-radius: 50%;
-        overflow: hidden;
-        display: flex;
-      }
-      .ql-editor {
+    .floating-toolbar {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background-color: white;
+    }
 
-      }
-      .ql-blank::before{
-        font-style: inherit !important;
-        color: #C9C9C9 !important;
-      }
-      .ql-mention-list-item .picture {
-        width: 100%;
-        border-radius: 0 !important;
-        object-fit: cover;
-      }
-      .ql-editor a, .ql-snow .ql-editor a {
-        text-decoration: none;
-      }
-      .ql-mention-denotation-char, .ql-editor a {
-        color: #02A7E1 !important;
-      }
-      .mention {
-        background-color: transparent;
-      }
-    </style>
-  </head>
+    #editor {
+      border: hidden !important;
+    }
 
-  <body class="app-body">
-    <div id="editor"></div>
+    .ql-container {
+      font-size: 16px;
+      font-family: 'Merriweather', serif;
+      display: flex !important;
+      flex-direction: column;
+      justify-content: stretch;
+      align-items: stretch;
+      color: #545454;
+      height: 100vh;
+    }
 
-    <script src="https://cdn.quilljs.com/1.3.6/quill.min.js?refresh=1" charset="UTF-8"></script>
-    <script src="https://alibrate.github.io/quill-mention/dist/quill.mention.min.js?refresh=1" charset="UTF-8"></script> <!-- TODO: point to alibrate CDN-->
+    .ql-mention-list-container {
+      position: relative !important;
+      flex: 3;
+      margin-top: 10px;
+      min-height: calc(100vh - 50px);
+      top: auto !important;
+      bottom: auto !important;
+      z-index: 9999;
+      overflow: auto;
+      /* height: 70vh; */
+      width: 100%;
+      height: 100%;
+      background: #fff;
+      box-shadow: none;
+      border-color: #DDDDDD;
+      border-radius: 0px;
+    }
 
-    <script inline charset="utf-8">
-      /* Tip: una buena manera de mantener este archivo es abrirlo directamente en el navegador. */
+    .ql-mention-list-item {
+      display: flex;
+      border-bottom: 1px solid #DDDDDD;
+      padding: 15px 10px;
+    }
 
-      // este es un placeholder de un método que servirá para diferir la muestra de los resultados de la api
-      let renderMentionsList = null;
-      if (window.addEventListener) {
-          document.addEventListener('click', function (e) {
-                  e.preventDefault();         // Comment this line to enable the link tag again.
-          });
-      }
-        const quill = new Quill('#editor', {
-          modules: {
-            toolbar: null,
-            mention: {
-              allowedChars: /^[A-Za-z.\s]*$/,
-              mentionDenotationChars: ['@'],
-              dataAttributes: ['id', 'value', 'type', 'denotationChar', 'link', 'target'],
-              linkTarget: '',
-              source: function (searchTerm, renderList) {
-                if (!renderMentionsList) {
-                  // siendo que no podemos esperar la respuesta de la api, diferimos la ejecución del callback mediante una variable global
-                  renderMentionsList = renderList
-                }
-                if (searchTerm.length === 0) {
-                  return
-                }
+    .ql-mention-list-item.selected {
+      background: #fff;
+    }
 
-                emitEvent({
-                  type: 'mention-start',
-                  value: searchTerm
-                })
-              },
-              renderItem: function (item) {
-                return '<span class="row">' +
-                    '<span class="avatar">' +
-                    '<img class="picture" src="' + item.picture + '" alt="avatar" />' +
-                    '</span>' +
-                    '<span class="text">' + item.username + '</span>' +
-                    '</span>'
-              },
-              onSelect: function (item, insertItem) {
-                const plainText = item.value.replace(/<[^>]*>?/gm, '').replace(/\ufeff/g, ''); // no HTML and no BOM
-                emitEvent({
-                  type: 'mention-selected',
-                  value: {
-                    ...item,
-                    value: plainText
-                  }
-                });
-                insertItem(item)
-              }
+    .ql-mention-list-item .row {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+    }
+
+    .ql-mention-list-item .text {
+      font-weight: bold;
+      font-size: 14px;
+      color: #333;
+      vertical-align: middle;
+      display: inline-block;
+      line-height: 14px;
+      padding-left: 10px;
+    }
+
+    .ql-mention-list-item .avatar {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      overflow: hidden;
+      display: flex;
+    }
+
+    .ql-mention-list-item .cover {
+      width: 24px;
+      height: 34px;
+      overflow: hidden;
+      display: flex;
+    }
+
+    .ql-editor {}
+
+    .ql-blank::before {
+      font-style: inherit !important;
+      color: #C9C9C9 !important;
+    }
+
+    .ql-mention-list-item .picture {
+      width: 100%;
+      border-radius: 0 !important;
+      object-fit: cover;
+    }
+
+    .ql-editor a,
+    .ql-snow .ql-editor a {
+      text-decoration: none;
+    }
+
+    .ql-mention-denotation-char,
+    .ql-editor a {
+      color: #02A7E1 !important;
+    }
+
+    .mention {
+      background-color: transparent;
+    }
+  </style>
+</head>
+
+<body class="app-body">
+  <div id="editor"></div>
+
+  <script src="https://cdn.quilljs.com/1.3.6/quill.min.js?refresh=1" charset="UTF-8"></script>
+  <script src="https://alibrate.github.io/quill-mention/dist/quill.mention.min.js?refresh=1" charset="UTF-8"></script>
+  <!-- TODO: point to alibrate CDN-->
+
+  <script inline charset="utf-8">
+    /* Tip: una buena manera de mantener este archivo es abrirlo directamente en el navegador. */
+
+    // este es un placeholder de un método que servirá para diferir la muestra de los resultados de la api
+    let renderMentionsList = null;
+    if (window.addEventListener) {
+      document.addEventListener('click', function (e) {
+        e.preventDefault();         // Comment this line to enable the link tag again.
+      });
+    }
+    const quill = new Quill('#editor', {
+      modules: {
+        toolbar: null,
+        mention: {
+          allowedChars: /^[A-Za-z.\s]*$/,
+          mentionDenotationChars: ['@'],
+          dataAttributes: ['id', 'value', 'type', 'denotationChar', 'link', 'target'],
+          linkTarget: '',
+          source: function (searchTerm, renderList) {
+            if (!renderMentionsList) {
+              // siendo que no podemos esperar la respuesta de la api, diferimos la ejecución del callback mediante una variable global
+              renderMentionsList = renderList
             }
-          },
-          placeholder: 'Comparte un texto o una foto',
-          theme: 'snow',
-        });
+            if (searchTerm.length === 0) {
+              return
+            }
 
-        // Toda vez que se edita el contenido, se envia el contenido a React Native
-        quill.on('text-change', () => {
-          const mentions = deduceMentionsIndices (quill.getContents(), quill.root.innerHTML)
-          try {
             emitEvent({
-              type: 'content-change',
-              value: quill.root.innerHTML.replace(/\ufeff/g, ''), // no BOM characters
-              mentions
+              type: 'mention-start',
+              value: searchTerm
+            })
+          },
+          renderItem: function (item) {
+            const cssClass = item.type === 'book' ? 'cover' : 'avatar'
+            return '<span class="row">' +
+              '<span class="' + cssClass + '">' +
+              '<img class="picture" src="' + item.picture + '" alt="avatar" />' +
+              '</span>' +
+              '<span class="text">' + item.text + '</span>' +
+              '</span>'
+          },
+          onSelect: function (item, insertItem) {
+            const plainText = item.value.replace(/<[^>]*>?/gm, '').replace(/\ufeff/g, ''); // no HTML and no BOM
+            emitEvent({
+              type: 'mention-selected',
+              value: {
+                ...item,
+                value: plainText
+              }
             });
-          } catch (e) {
-            emitEvent({e});
+            insertItem(item)
           }
-        });
-
-        // Recepción de mensajes de React Native
-        handleExternalEvents(quill);
-
-      function emitEvent(event) {
-        window.postMessage(JSON.stringify(event), '*');
-      }
-
-      function handleExternalEvents(quill) {
-        document.addEventListener('message', ({ data }) => {
-          const { value, placeholder = '' } = JSON.parse(data)
-          if (placeholder) {
-            quill.root.dataset.placeholder = placeholder;
-          }
-          if (value.substr(0, 7) === '$image$') {
-            handleImage(quill, value);
-          } else if (value[0] === '$') {
-            applyFormat(quill, value)
-          } else if (value[0] === '{') {
-            handleObject(quill, value)
-          } else if (value[0] === '<') {
-            quill.setContents(quill.clipboard.convert(value, 'silent'))
-          } else {
-            quill.focus()
-          }
-        });
-      }
-
-      function handleImage(quill, data) {
-        const base64 = data.data.substr(7);
-        const { index } = quill.getSelection();
-        quill.insertEmbed(index, 'image', base64);
-      }
-
-      function handleObject(quill, data) {
-        const content = JSON.parse(data);
-        const isMentionsList = typeof content.mentions !== 'undefined'
-        if(isMentionsList) {
-          renderMentionsList(content.mentions.slice(0, 7));
-          return;
         }
-        quill.setContents(content);
-      }
+      },
+      placeholder: 'Comparte un texto o una foto',
+      theme: 'snow',
+    });
 
-      function applyFormat(quill, data) {
-        const updatedSelector = data.slice(1, data.length - 1);
-        const currentFormat = quill.getFormat();
-        switch (updatedSelector) {
-          case 'bold': {
-            quill.format(updatedSelector, !currentFormat.bold, 'user');
-            break;
-          }
-          case 'italic': {
-            quill.format(updatedSelector, !currentFormat.italic, 'user');
-            break;
-          }
-          case 'underline': {
-            quill.format(updatedSelector, !currentFormat.underline, 'user');
-            break;
-          }
-          case 'size': {
-            const updatedFormat = currentFormat.size === 'large' ? null : 'large';
-            quill.format('size', updatedFormat, 'user');
-            break;
-          }
-          case 'h1': {
-            const updatedFormat = currentFormat.header === 1 ? null : 1;
-            quill.format('header', updatedFormat, 'user');
-            break;
-          }
-          case 'ul': {
-            const updatedFormat = currentFormat.list === 'bullet' ? null : 'bullet';
-            quill.format('list', updatedFormat, 'user');
-            break;
-          }
-          case 'ol': {
-            const updatedFormat = currentFormat.list === 'ordered' ? null : 'ordered';
-            quill.format('list', updatedFormat, 'user');
-            break;
-          }
-          case 'code-block': {
-            quill.format(updatedSelector, !currentFormat['code-block'], 'user');
-            break;
-          }
-          default:
-            break;
-        }
-      }
-
-      function deduceMentionsIndices(contentChunks, html) {
-        const rawMentions = contentChunks
-            .filter(chunk => typeof chunk.insert.mention !== 'undefined')
-            .map(chunk => ({
-              ...chunk,
-              word: extractPlainText(chunk.insert.mention.value)
-            }))
-
-        if (rawMentions.length === 0)
-          return []
-
-        const plainText = extractPlainText(html)
-
-        const { mentions } = rawMentions.reduce(calculateOffset, { plainText, startFrom: 0, mentions: [] })
-
-        return mentions
-      }
-
-      function  calculateOffset(params, rawMention) {
-        const { plainText, startFrom, mentions } = params
-        const word = rawMention.word
-
-        const offset = plainText.slice(startFrom).indexOf('@' + word)
-
-        const mention = {
-          offset: startFrom + offset, // the place where the mention starts
-          length: word.length, // only the word, without the @ symbol
-          type: rawMention.insert.mention.type,
-          id: rawMention.insert.mention.id
-        }
-
-        mentions.push(mention)
-
-        return {
-          plainText,
-          startFrom: mention.offset + mention.length + 1,
+    // Toda vez que se edita el contenido, se envia el contenido a React Native
+    quill.on('text-change', () => {
+      const mentions = deduceMentionsIndices(quill.getContents(), quill.root.innerHTML)
+      try {
+        emitEvent({
+          type: 'content-change',
+          value: quill.root.innerHTML.replace(/\ufeff/g, ''), // no BOM characters
           mentions
+        });
+      } catch (e) {
+        emitEvent({ e });
+      }
+    });
+
+    // Recepción de mensajes de React Native
+    handleExternalEvents(quill);
+
+    function emitEvent(event) {
+      window.postMessage(JSON.stringify(event), '*');
+    }
+
+    function handleExternalEvents(quill) {
+      document.addEventListener('message', ({ data }) => {
+        const { value, placeholder = '' } = JSON.parse(data)
+        if (placeholder) {
+          quill.root.dataset.placeholder = placeholder;
         }
+        if (value.substr(0, 7) === '$image$') {
+          handleImage(quill, value);
+        } else if (value[0] === '$') {
+          applyFormat(quill, value)
+        } else if (value[0] === '{') {
+          handleObject(quill, value)
+        } else if (value[0] === '<') {
+          quill.setContents(quill.clipboard.convert(value, 'silent'))
+        } else {
+          quill.focus()
+        }
+      });
+    }
+
+    function handleImage(quill, data) {
+      const base64 = data.data.substr(7);
+      const { index } = quill.getSelection();
+      quill.insertEmbed(index, 'image', base64);
+    }
+
+    function handleObject(quill, data) {
+      const content = JSON.parse(data);
+      const isMentionsList = typeof content.mentions !== 'undefined'
+      if (isMentionsList) {
+        renderMentionsList(content.mentions.slice(0, 7));
+        return;
+      }
+      quill.setContents(content);
+    }
+
+    function applyFormat(quill, data) {
+      const updatedSelector = data.slice(1, data.length - 1);
+      const currentFormat = quill.getFormat();
+      switch (updatedSelector) {
+        case 'bold': {
+          quill.format(updatedSelector, !currentFormat.bold, 'user');
+          break;
+        }
+        case 'italic': {
+          quill.format(updatedSelector, !currentFormat.italic, 'user');
+          break;
+        }
+        case 'underline': {
+          quill.format(updatedSelector, !currentFormat.underline, 'user');
+          break;
+        }
+        case 'size': {
+          const updatedFormat = currentFormat.size === 'large' ? null : 'large';
+          quill.format('size', updatedFormat, 'user');
+          break;
+        }
+        case 'h1': {
+          const updatedFormat = currentFormat.header === 1 ? null : 1;
+          quill.format('header', updatedFormat, 'user');
+          break;
+        }
+        case 'ul': {
+          const updatedFormat = currentFormat.list === 'bullet' ? null : 'bullet';
+          quill.format('list', updatedFormat, 'user');
+          break;
+        }
+        case 'ol': {
+          const updatedFormat = currentFormat.list === 'ordered' ? null : 'ordered';
+          quill.format('list', updatedFormat, 'user');
+          break;
+        }
+        case 'code-block': {
+          quill.format(updatedSelector, !currentFormat['code-block'], 'user');
+          break;
+        }
+        default:
+          break;
+      }
+    }
+
+    function deduceMentionsIndices(contentChunks, html) {
+      const rawMentions = contentChunks
+        .filter(chunk => typeof chunk.insert.mention !== 'undefined')
+        .map(chunk => ({
+          ...chunk,
+          word: extractPlainText(chunk.insert.mention.value)
+        }))
+
+      if (rawMentions.length === 0)
+        return []
+
+      const plainText = extractPlainText(html)
+
+      const { mentions } = rawMentions.reduce(calculateOffset, { plainText, startFrom: 0, mentions: [] })
+
+      return mentions
+    }
+
+    function calculateOffset(params, rawMention) {
+      const { plainText, startFrom, mentions } = params
+      const word = rawMention.word
+
+      const offset = plainText.slice(startFrom).indexOf('@' + word)
+
+      const mention = {
+        offset: startFrom + offset, // the place where the mention starts
+        length: word.length, // only the word, without the @ symbol
+        type: rawMention.insert.mention.type,
+        id: rawMention.insert.mention.id
       }
 
-      function extractPlainText (html) {
-        let text = html || ''
-        // as there is html nested inside some html attributes, we need a recursive strategy to clean up the html
-        while (text !== (text = text.replace(/<[^<>]*>/g, '')));
+      mentions.push(mention)
 
-        return text.replace(/\ufeff/g, '') // replace BOM character if exists
+      return {
+        plainText,
+        startFrom: mention.offset + mention.length + 1,
+        mentions
       }
-    </script>
-  </body>
+    }
+
+    function extractPlainText(html) {
+      let text = html || ''
+      // as there is html nested inside some html attributes, we need a recursive strategy to clean up the html
+      while (text !== (text = text.replace(/<[^<>]*>/g, '')));
+
+      return text.replace(/\ufeff/g, '') // replace BOM character if exists
+    }
+  </script>
+</body>
+
 </html>
