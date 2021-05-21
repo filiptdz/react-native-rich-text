@@ -62,64 +62,64 @@ ToolbarButton.defaultProps = {
 };
 
 export default class Toolbar extends React.Component {
-  static BOLD = ({ callback, source }) => {
+  static BOLD = ({ callback, source, style = {}, containerStyle = {} }) => {
     return (
-      <ToolbarButton callback={callback} format="bold">
+      <ToolbarButton callback={callback} format="bold" style={containerStyle}>
         <Image
-          style={styles.image}
+          style={[styles.image, style]}
           source={source || require('./assets/bold.png')}
         />
       </ToolbarButton>
     );
   };
 
-  static ITALIC = ({ callback, source }) => {
+  static ITALIC = ({ callback, source, style = {}, containerStyle = {} }) => {
     return (
-      <ToolbarButton callback={callback} format="italic">
+      <ToolbarButton callback={callback} format="italic" style={containerStyle}>
         <Image
-          style={styles.image}
+        style={[styles.image, style]}
           source={source || require('./assets/italic.png')}
         />
       </ToolbarButton>
     );
   };
 
-  static H1 = ({ callback, source }) => {
+  static H1 = ({ callback, source, style = {}, containerStyle = {} }) => {
     return (
-      <ToolbarButton callback={callback} format="h1">
+      <ToolbarButton callback={callback} format="h1" style={containerStyle}>
         <Image
-          style={styles.image}
+        style={[styles.image, style]}
           source={source || require('./assets/header.png')}
         />
       </ToolbarButton>
     );
   };
 
-  static UL = ({ callback, source }) => {
+  static UL = ({ callback, source, style = {}, containerStyle = {} }) => {
     return (
-      <ToolbarButton callback={callback} format="ul">
+      <ToolbarButton callback={callback} format="ul" style={containerStyle}>
         <Image
-          style={styles.image}
+        style={[styles.image, style]}
           source={source || require('./assets/list-bullet.png')}
         />
       </ToolbarButton>
     );
   };
 
-  static OL = ({ callback, source }) => {
+  static OL = ({ callback, source, style = {}, containerStyle = {} }) => {
     return (
-      <ToolbarButton callback={callback} format="ol">
+      <ToolbarButton callback={callback} format="ol" style={containerStyle}>
         <Image
-          style={styles.image}
+        style={[styles.image, style]}
           source={source || require('./assets/list-ordered.png')}
         />
       </ToolbarButton>
     );
   };
 
-  static CODE = ({ callback, source }) => {
+  static CODE = ({ callback, source, style = {}, containerStyle = {} }) => {
     return (
-      <ToolbarButton callback={callback} format="code-block">
+      <ToolbarButton callback={callback} format="code-block" style={containerStyle}>
         <Image
           style={[styles.image, { height: 15, width: 18 }]}
           source={source || require('./assets/code.png')}
@@ -128,7 +128,7 @@ export default class Toolbar extends React.Component {
     );
   };
 
-  static IMAGE = ({ callback, source}) => {
+  static IMAGE = ({ callback, source }) => {
     return (
       <RichTextContext.Consumer>
         {({ setFormat }) => (
@@ -152,20 +152,22 @@ export default class Toolbar extends React.Component {
     );
   };
 
-  static UNDERLINE = ({ callback, source }) => {
+  static UNDERLINE = ({ callback, source, style = {}, containerStyle = {} }) => {
     return (
-      <ToolbarButton callback={callback} format="underline">
-        <Image style={styles.image}
-               source={source || require('./assets/underline.png')} />
+      <ToolbarButton callback={callback} format="underline" style={containerStyle}>
+        <Image
+          style={[styles.image, style]}
+          source={source || require('./assets/underline.png')} />
       </ToolbarButton>
     )
   };
 
-  static SIZE = ({ callback, source }) => {
+  static SIZE = ({ callback, source, style = {}, containerStyle = {} }) => {
     return (
-      <ToolbarButton callback={callback} format="size">
-        <Image style={styles.image}
-               source={source || require('./assets/increase.png')} />
+      <ToolbarButton callback={callback} format="size" style={containerStyle}>
+        <Image
+          style={[styles.image, style]}
+          source={source || require('./assets/increase.png')} />
       </ToolbarButton>
     );
   }
