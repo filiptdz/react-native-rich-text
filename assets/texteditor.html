@@ -138,7 +138,7 @@
     // este es un placeholder de un método que servirá para diferir la muestra de los resultados de la api
     let renderMentionsList = null;
     if (window.addEventListener) {
-      document.addEventListener('click', function (e) {
+      window.addEventListener('click', function (e) {
         e.preventDefault();         // Comment this line to enable the link tag again.
       });
     }
@@ -193,6 +193,7 @@
     // Toda vez que se edita el contenido, se envia el contenido a React Native
     quill.on('text-change', () => {
       const mentions = deduceMentionsIndices(quill.getContents(), quill.root.innerHTML)
+
       try {
         emitEvent({
           type: 'content-change',
@@ -208,11 +209,11 @@
     handleExternalEvents(quill);
 
     function emitEvent(event) {
-      window.postMessage(JSON.stringify(event), '*');
+      window.ReactNativeWebView.postMessage(JSON.stringify(event));
     }
 
     function handleExternalEvents(quill) {
-      document.addEventListener('message', ({ data }) => {
+      window.addEventListener('message', ({ data }) => {
         const { value, placeholder = '' } = JSON.parse(data)
         if (placeholder) {
           quill.root.dataset.placeholder = placeholder;
