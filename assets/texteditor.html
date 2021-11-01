@@ -34,7 +34,7 @@
       justify-content: stretch;
       align-items: stretch;
       color: #545454;
-      height: 100vh;
+      height: auto !important;
     }
 
     .ql-mention-list-container {
@@ -96,7 +96,9 @@
       display: flex;
     }
 
-    .ql-editor {}
+    .ql-editor {
+      height: auto !important;
+    }
 
     .ql-blank::before {
       font-style: inherit !important;
@@ -186,7 +188,7 @@
           }
         }
       },
-      placeholder: 'Comparte un texto o una foto',
+      placeholder: 'Comparte un texto, una imagen o un video (pega el link aquí)',
       theme: 'snow',
     });
 

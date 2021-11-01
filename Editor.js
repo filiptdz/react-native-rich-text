@@ -3,17 +3,20 @@ import {
   View, Keyboard, LayoutAnimation, UIManager, Platform,
 } from 'react-native';
 import PropTypes from 'prop-types';
-import { WebView } from 'react-native-webview';
+import AutoHeightWebView from 'react-native-autoheight-webview'
 
 import { RichTextContext } from './RichText';
 
 export const EditorWebView = React.createRef();
+
+
 
 export default class Editor extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       keyboardHeight: 0,
+      height: 0
     };
     if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
       UIManager.setLayoutAnimationEnabledExperimental(true);
@@ -47,7 +50,6 @@ export default class Editor extends React.Component {
   onWebViewMessage = (evt) => {
     const { onChangeText, onMentionSelected } = this.props;
     const messageString = evt.nativeEvent.data;
-
     if (messageString === '')
       return false
 
@@ -65,6 +67,7 @@ export default class Editor extends React.Component {
       text: message.value,
       mentions: message.mentions
     });
+  
   }
 
   handleMentionStart(word) {
@@ -77,10 +80,19 @@ export default class Editor extends React.Component {
     onMentionStart(word, callback)
   }
 
-  render() {
-    const { keyboardHeight } = this.state;
-    const { style } = this.props;
+  setHeight = (size) => {
+    console.log(size.height, 'alto')
+    this.setState({
+      ...this.state,
+      height: size.height
+    })
+  }
 
+
+
+  render() {
+    const { keyboardHeight, height } = this.state;
+    const { style } = this.props;
     return (
         <RichTextContext.Consumer>
           {({ setFormat, updateFormatFunc, value, placeholder = '' }) => {
@@ -88,15 +100,16 @@ export default class Editor extends React.Component {
               updateFormatFunc(this.updateFormat);
             }
             return (
-              <View style={[{ flex: 1 }, style]}>
-                <WebView
+              <View style={[ { height: height, minHeight: 60 }, style]}>
+                <AutoHeightWebView
                     ref={EditorWebView}
                     onLoad={() => this.post({ value, placeholder })}
                     onError={error => console.error(error)}
                     javaScriptEnabled
+                    onSizeUpdated={this.setHeight}
                     domStorageEnabled
                     bounces={false}
-                    scalesPageToFit={false}
+                    automaticallyAdjustContentInsets={false}
                     originWhitelist={['*']}
                     source={
                       Platform.OS === 'android'
@@ -108,7 +121,7 @@ export default class Editor extends React.Component {
                           :
                           { uri:'./html/texteditor.html' }
                     }
-                    style={{ backgroundColor: 'white', flex: 1 }}
+                    style={{  }}
                     onMessage={this.onWebViewMessage}
                 />
                 <View
